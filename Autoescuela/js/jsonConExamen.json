@@ -1,0 +1,12 @@
+{
+    "codigoExamen":null,
+    "enunciado":null,
+    "numPreguntas":null,
+    "bancoPreguntas":[
+            {   "id":27,
+                "tematica":"motor",
+                "enunciado":"Enunciado de la pregunta",
+                "recurso":"imagen/motor/" }
+        ],
+    "preguntasIncluidas":[25,56,45,46]
+}
