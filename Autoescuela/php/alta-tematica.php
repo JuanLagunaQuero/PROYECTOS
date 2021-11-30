@@ -4,7 +4,7 @@ include("include/bd.php");
 if (isset($_POST["aceptar"]))
 {
     BD::conecta();
-    if (isset($_POST["nombre"]))
+    if ($_POST["nombre"]!="")
     {
         $tematica = new Tematica(NULL, $_POST["nombre"]);
         BD::insertaTematica($tematica);  

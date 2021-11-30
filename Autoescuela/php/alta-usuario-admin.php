@@ -12,7 +12,7 @@ if (isset($_POST["guardar"]))
 
         $u = BD::leeUsuario($_POST["correo"]);
 
-        BD::insertaUsuarioConfirmar($u->getid_usuario());
+        BD::insertaUsuarioConfirmar($u);
 
     }
     else{

@@ -37,9 +37,8 @@ class BD
     public static function insertaUsuarioConfirmar($usuario)
     {
         $id_confirmar = generateRandomString();
-
         self::$con->exec("INSERT INTO `usuario_confirmar`(`id`, `id_usuario`, `fecha_vencimiento`)
-        VALUES('${id_confirmar}', '".$usuario->getid_usuario()."', (NOW(), INTERVAL 30 MINUTE))");
+        VALUES('${id_confirmar}', '".$usuario->getid_usuario()."', DATE_ADD(NOW(), INTERVAL 30 MINUTE))");
 
         $url="localhost/PROYECTOS/Autoescuela/php/confirmar.php";
         $mail = new PHPMailer();
@@ -79,7 +78,7 @@ class BD
         {
            $u = new Usuario($registro["id_usuario"], $registro["correo"], $registro["nombre"], $registro["apellidos"], $registro["contrasena"], $registro["fecha_nacimiento"], $registro["rol"], $registro["foto"]);
         }
-        return $u->getapellidos();
+        return $u;
     }
 
     public static function actualizaUsuario(Usuario $u)
@@ -105,7 +104,9 @@ class BD
     }
 
 
+
     public static function insertaPregunta(Pregunta $p)
     {
+        
     }
 }

@@ -1,6 +1,19 @@
 <?php
 
 include("include/bd.php");
+if (isset($_POST["aceptar"]))
+{
+    if ($_POST["tematica"]!="" && $_POST["enunciado"]!="" && $_POST["opcion1"]!="" && $_POST["opcion2"]!="" 
+    && $_POST["opcion3"]!="" && $_POST["opcion4"]!="" && $_POST["correcta"]!="")
+    {
+        $p=new Pregunta(NULL, $_POST["enunciado"], $_POST["tematica"], $_POST["correcta"], NULL, 
+            [$_POST["opcion1"], $_POST["opcion2"], $_POST["opcion3"], $_POST["opcion4"]]);
+        
+    }
+    else{
+        echo '<script>alert("Inserte todos los datos")</script>';
+    }
+}
 
 BD::conecta();
 ?>
@@ -25,7 +38,16 @@ BD::conecta();
         <textarea name="enunciado" id="enunciado" cols="30" rows="10"></textarea><br><br>
 
         <label for="opcion1">Opcion 1</label><br>
-        <input type="text" name="opcion1" id="opcion1"> &nbsp; <input type="checkbox" value="1" id="product-1-1" name="check" /> correcta<br/>
+        <input type="text" name="opcion1" id="opcion1"> &nbsp; <input type="radio" name="correcta" id="opcion1"> Correcta<br/>
+        <label for="opcion1">Opcion 2</label><br>
+        <input type="text" name="opcion2" id="opcion2"> &nbsp; <input type="radio" name="correcta" id="opcion2"> Correcta<br/>
+        <label for="opcion1">Opcion 3</label><br>
+        <input type="text" name="opcion1" id="opcion3"> &nbsp; <input type="radio" name="correcta" id="opcion3"> Correcta<br/>
+        <label for="opcion1">Opcion 4</label><br>
+        <input type="text" name="opcion1" id="opcion4"> &nbsp; <input type="radio" name="correcta" id="opcion4"> Correcta<br/>
+
+        <input type="submit" id="aceptar" name="aceptar" value="Aceptar">
+
     </form>
 </body>
 </html>
