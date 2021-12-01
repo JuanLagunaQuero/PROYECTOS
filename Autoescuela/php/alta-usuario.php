@@ -1,10 +1,15 @@
 <?php
 include("include/bd.php");
 
+    $correo = $_GET['correo'];
+
     BD::conecta();
+
+    BD::leeUsuario($correo);
 
 if (isset($_POST["guardar"]))
 {
+        //BD::borraConfirmacion($id);
     
 }
    
@@ -20,7 +25,7 @@ if (isset($_POST["guardar"]))
 <body>
     <form action="" method="post">
         <label for="correo">Correo</label><br>
-        <input type="email" name="correo" id="correo" readonly><br><br>
+        <input type="email" name="correo" id="correo" readonly value=""><br><br>
         <label for="nombre">Nombre</label><br>
         <input type="text" name="nombre" id="nombre"><br><br>
         <label for="apellidos">Apellidos</label><br>

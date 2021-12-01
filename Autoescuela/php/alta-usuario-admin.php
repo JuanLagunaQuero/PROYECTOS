@@ -5,7 +5,7 @@ include("include/bd.php");
 if (isset($_POST["guardar"]))
 {
     BD::conecta();
-    if (isset($_POST["correo"]) && isset($_POST["nombre"]) && isset($_POST["apellidos"]) && isset($_POST["fecha_nacimiento"]) && isset($_POST["rol"]))
+    if ($_POST["correo"]!="" && isset($_POST["nombre"]) && isset($_POST["apellidos"]) && isset($_POST["fecha_nacimiento"]) && isset($_POST["rol"]))
     {
         $usuario = new Usuario(NULL, $_POST["correo"], $_POST["nombre"], $_POST["apellidos"], "CONTRASEÑA", $_POST["fecha_nacimiento"], $_POST["rol"], 0, NULL);
         BD::insertaUsuario($usuario);   
@@ -18,8 +18,6 @@ if (isset($_POST["guardar"]))
     else{
         echo '<script> alert("Inserte todos los datos")</script>';
     }
-
-    
 }
    
 ?>
