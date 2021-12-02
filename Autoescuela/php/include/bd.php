@@ -1,12 +1,12 @@
 <?php
 
-require_once('examen-hecho.php');
-require_once('examen.php');
-require_once('pregunta.php');
-require_once('respuesta.php');
-require_once('tematica.php');
-require_once('usuario.php');
-require_once('confirmacion.php');
+require_once('Examen-hecho.php');
+require_once('Examen.php');
+require_once('Pregunta.php');
+require_once('Respuesta.php');
+require_once('Tematica.php');
+require_once('Usuario.php');
+require_once('Confirmacion.php');
 require "vendor/autoload.php";
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -41,9 +41,9 @@ class BD
         $result = self::$con->query("SELECT `correo` FROM `usuario` WHERE `id_usuario`=".$id_usuario);
         while ($registro = $result->fetch(PDO::FETCH_ASSOC))
         {
-           $id = $registro['correo'];
+           $correo = $registro['correo'];
         }
-        return $id;
+        return $correo;
     }
 
     public static function leeUsuario($correo)
@@ -56,10 +56,22 @@ class BD
         return $u;
     }
 
-    public static function actualizaUsuario(Usuario $u)
+    public static function existeusuario($correo,$contrasena)
     {
-        self::$con->exec("UPDATE `usuario` SET nombre`=" . $u->getnombre() . ", `apellidos`=" . $u->getapellidos() . ",
-        `contrasena`=" . $u->getcontraseña() . ", `fecha_nacimiento`=" . $u->getfecha_nacimiento() . ", `foto`=" . $u->getfoto() . " WHERE `id_usuario`=" . $u->getid_usuario());
+
+        $sql = "SELECT * FROM `usuario` WHERE `correo` LIKE '$correo' AND `contrasena` LIKE '$contrasena'";
+            
+            if($resultado = self::$con->query($sql))
+             {
+                $fila = $resultado->fetch();
+                return ($fila != null);
+             }             
+    }
+
+    public static function actualizaUsuario($id, $nombre, $apellidos, $contrasena, $fecha_nacimiento, $foto)
+    {
+        self::$con->exec("UPDATE `usuario` SET `nombre`= '$nombre', `apellidos`= '$apellidos',
+        `contrasena`='$contrasena', `fecha_nacimiento`= '$fecha_nacimiento', `foto`='$foto' WHERE `id_usuario`=$id");
     }
 
 
@@ -107,7 +119,7 @@ class BD
         $mail->Password   = "autoescuelaproyecto123";       
         $mail->SetFrom('autoescuelaproyecto@gmail.com', 'Test');
         // asunto
-        $mail->Subject    = "Cambiar contrase&ntilde;a";
+        $mail->Subject    = "Cambiar contrasena";
         // cuerpo
         $mail->MsgHTML('<h1>Entre a este enlace e introduzca su nueva contraseña y una imagen de perfil<h1>
                         <p><a href="'.$url.'">Validar cuenta</a></p>');
@@ -130,9 +142,9 @@ class BD
         }         
     }
 
-    public static function borraConfirmacion($id)
+    public static function borraConfirmacion($id_usuario)
     {
-        self::$con->exec("DELETE FROM `usuario_confirmar` WHERE `id` = " .$id);
+        self::$con->exec("DELETE FROM `usuario_confirmar` WHERE `id_usuario` = " .$id_usuario);
     }
 
 

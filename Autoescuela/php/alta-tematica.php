@@ -1,6 +1,12 @@
 <?php
 include("include/bd.php");
 
+Sesion::iniciar();
+if (!Login::UsuarioEstaLogueado())
+{
+  header("Location:login.php");
+}
+
 if (isset($_POST["aceptar"]))
 {
     BD::conecta();

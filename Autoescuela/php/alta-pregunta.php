@@ -1,6 +1,15 @@
 <?php
 
+
+
 include("include/bd.php");
+
+Sesion::iniciar();
+if (!Login::UsuarioEstaLogueado())
+{
+  header("Location:login.php");
+}
+
 if (isset($_POST["aceptar"]))
 {
     if ($_POST["tematica"]!="" && $_POST["enunciado"]!="" && $_POST["opcion1"]!="" && $_POST["opcion2"]!="" 
