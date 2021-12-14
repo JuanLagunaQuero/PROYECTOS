@@ -1,0 +1,36 @@
+footer{
+    @include box-sizing(border-box);
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    padding: 5px;
+    display: block;
+    >section{
+        float: left;
+    }
+    section{
+        >ul{    
+            list-style-type: none;
+        }
+        li{
+            margin: 0;
+        }
+    }
+
+    >section.izq{
+        margin-left: 5%;
+    }
+    section.cent{
+        text-align: left;
+        margin-left: 17%;
+    }
+    section.der{
+        margin-left: 17%;
+    }
+
+    hr{
+        size: 20px;
+    }
+
+    
+}

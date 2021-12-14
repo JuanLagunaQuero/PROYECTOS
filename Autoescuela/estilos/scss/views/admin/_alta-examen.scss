@@ -1,0 +1,49 @@
+main{
+    padding: 1% 5%;
+}
+
+#preguntas{
+    margin-top: 5px;
+    float: left;
+    width: 100%;
+    min-height: 200px;
+    border: 2px solid black;
+}
+
+#seleccionadas{
+    margin-top: 5px;
+    width: 100%;
+    float: left;
+    min-height: 200px;
+    border: 2px solid black;
+}
+
+#general{
+    margin: 20px 0;
+}
+
+.pregunta{
+    
+    height:50px;
+    border:1px solid;
+    background-color:beige;
+}
+
+#izq{
+    width: 30%;
+    float: left;
+}
+
+#der{
+    width: 30%;
+    float: right;
+    
+}
+
+div.marcado{
+    border:3px solid black;
+}
+
+div.oculto{
+    display:none;
+}

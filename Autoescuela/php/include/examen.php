@@ -1,10 +1,10 @@
 <?php
 class Examen{
-    private static $id_examen;
-    private static $descripcion;
-    private static $numero_preguntas;
-    private static $duracion;
-    private static $activo;
+    protected $id_examen;
+    private $descripcion;
+    private $numero_preguntas;
+    private $duracion;
+    private $activo;
 
     public function getid_examen(){return $this-> id_examen;}
     public function getdescripcion(){return $this-> descripcion;}
@@ -21,5 +21,3 @@ class Examen{
         $this->activo = $activo;
     }
 }
-
-?>

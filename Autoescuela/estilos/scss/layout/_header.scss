@@ -1,0 +1,17 @@
+header {
+    padding: 12px;
+    background-color: #eee;
+    overflow: hidden;
+    display: block;
+    position: relative;
+    section{
+        float: left;
+        width: 200px;
+        margin: 0;
+    }
+
+    section.cuenta{
+        margin-left: 70%;
+    }
+
+}

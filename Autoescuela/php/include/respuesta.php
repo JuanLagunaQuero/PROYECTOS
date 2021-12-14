@@ -1,9 +1,8 @@
 <?php
-
 class Respuesta{
-    private static $id_respuesta;
-    private static $contenido;
-    private static $id_pregunta;
+    protected $id_respuesta;
+    private $contenido;
+    private $id_pregunta;
 
     public function getid_respuesta(){return $this->id_respuesta;}
     public function getcontenido(){return $this->contenido;}
@@ -16,5 +15,3 @@ class Respuesta{
         $this->id_pregunta = $id_pregunta;
     }
 }
-
-?>

@@ -1,11 +1,10 @@
 <?php
-
 class Examen_Hecho{
-    private static $id_examen_hecho;
-    private static $id_examen;
-    private static $id_alumno;
-    private static $calificacion;
-    private static $ejecucion;
+    protected $id_examen_hecho;
+    private $id_examen;
+    private $id_alumno;
+    private $calificacion;
+    private $ejecucion;
 
     public function getid_examen_hecho(){return $this-> id_examen_hecho;}
     public function getid_examen(){return $this-> id_examen;}
@@ -23,4 +22,3 @@ class Examen_Hecho{
     }
 
 }
-?>
