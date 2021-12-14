@@ -1,34 +1,30 @@
 <?php
 include("include/bd.php");
-include("include/Sesion.php");
 include("include/Login.php");
 
-Sesion::iniciar();
-if (!Login::UsuarioEstaLogueado()) {
-    header("Location:login.php");
-}
+$correo = $_GET['correo'];
 
-if (isset($_POST["aceptar"])) {
-    if (
-        $_POST["tematica"] != "" && $_POST["enunciado"] != "" && $_POST["opcion1"] != "" && $_POST["opcion2"] != ""
-        && $_POST["opcion3"] != "" && $_POST["opcion4"] != "" && $_POST["correcta"] != ""
-    ) {
-        $p = new Pregunta(
-            NULL,
-            $_POST["enunciado"],
-            $_POST["tematica"],
-            $_POST["correcta"],
-            NULL,
-            [$_POST["opcion1"], $_POST["opcion2"], $_POST["opcion3"], $_POST["opcion4"]]
-        );
+BD::conecta();
 
-        BD::insertaPregunta($p);
+$u = BD::leeUsuario($correo);
+
+if (isset($_POST["guardar"])) {
+    if (isset($_POST["correo"]) && $_POST["nombre"] != "" && $_POST["apellidos"] != "" && $_POST["fecha_nacimiento"] != "" && $_POST["contrasena"]) {
+
+        BD::actualizaUsuario($u->getid_usuario(), $_POST["nombre"], $_POST["apellidos"], $_POST["contrasena"], $_POST["fecha_nacimiento"], NULL);
+
+        BD::borraConfirmacion($u->getid_usuario());
+
+        Login::Identifica($_POST["correo"], $_POST["contrasena"], false);
+        if (Login::UsuarioEstaLogueado()) {
+            Sesion::escribir('usuario', BD::leeUsuario($_POST["correo"], $_POST["contrasena"]));
+            header("Location: ../inicio.html");
+        }
     } else {
-        echo '<script>alert("Inserte todos los datos")</script>';
+        echo '<script> alert("Inserte todos los datos")</script>';
     }
 }
 
-BD::conecta();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,15 +33,13 @@ BD::conecta();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../estilos/css/main.css">
-    <title>Document</title>
+    <title>Alta usuario</title>
 </head>
 
 <body>
-
-    <header>
+<header>
         <section>
-            <img src="../estilos/images/logo.png" height="100px">
+            <img src="../estilos/images/logo.png" height="150px">
         </section>
 
         <section class="cuenta">
@@ -95,44 +89,30 @@ BD::conecta();
         </ul>
     </nav>
 
+
     <form action="" method="post">
-        <fieldset>
-            <legend>Alta de preguntas</legend>
-            <label for="tematica">Tematica</label><br>
-            <select name="tematica" id="tematica">
-                <?php
-                foreach (BD::leeTematicas() as $tematica) {
-                    echo '<option value="' . $tematica->getid_tematica() . '">' . $tematica->getnombre() . '</option>';
-                }
-                ?>
-            </select><br><br>
-            <label for="enunciado">Enunciado</label><br>
-            <textarea name="enunciado" id="enunciado" cols="30" rows="5"></textarea><br><br>
-
-            <label for="opcion1">Opcion 1</label><br>
-            <input type="text" name="opcion1" id="opcion1"> &nbsp; <input type="radio" name="correcta" value="opcion1"> Correcta<br />
-            <label for="opcion1">Opcion 2</label><br>
-            <input type="text" name="opcion2" id="opcion2"> &nbsp; <input type="radio" name="correcta" value="opcion2"> Correcta<br />
-            <label for="opcion1">Opcion 3</label><br>
-            <input type="text" name="opcion3" id="opcion3"> &nbsp; <input type="radio" name="correcta" value="opcion3"> Correcta<br />
-            <label for="opcion1">Opcion 4</label><br>
-            <input type="text" name="opcion4" id="opcion4"> &nbsp; <input type="radio" name="correcta" value="opcion4"> Correcta<br />
-
-            <input type="submit" id="aceptar" name="aceptar" value="Aceptar">
-
-        </fieldset>
-
+        <label for="correo">Correo</label><br>
+        <input type="email" name="correo" id="correo" readonly value="<?php echo $u->getcorreo(); ?>"><br><br>
+        <label for="nombre">Nombre</label><br>
+        <input type="text" name="nombre" id="nombre" value="<?php echo $u->getnombre(); ?>"><br><br>
+        <label for="apellidos">Apellidos</label><br>
+        <input type="text" name="apellidos" id="apellidos" value="<?php echo $u->getapellidos(); ?>"><br><br>
+        <label for="fecha_nacimiento">Fecha de nacimiento</label><br>
+        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="<?php echo $u->getfecha_nacimiento(); ?>"><br><br>
+        <label for="contrasena">Contraseña</label><br>
+        <input type="password" id="contrasena" name="contrasena"><br><br>
+        <input type="submit" id="guardar" name="guardar" value="Guardar">
     </form>
 
-    <footer>
-        <hr>
+<footer>
+    <hr>
         <section class="izq">
             <ul>
                 <li><a href="">Guía de estilo</a></li>
                 <li><a href="">Mapa del sitio web</a></li>
             </ul>
         </section>
-
+        
         <section class="cent">
             <h3>Enlaces relacionados</h3>
             <ul>
@@ -150,9 +130,7 @@ BD::conecta();
                 <li>Redes sociales</li>
             </ul>
         </section>
-
-    </footer>
+        
+</footer>
 </body>
-
-
 </html>

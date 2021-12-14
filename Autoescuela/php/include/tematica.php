@@ -12,5 +12,3 @@ class Tematica{
         $this->nombre = $nombre;
     }
 }
-
-?>

@@ -1,0 +1,15 @@
+@import 'utilities/variables';
+@import 'utilities/function';
+@import 'utilities/mixin';
+
+@import 'base/reset';
+@import 'base/tipo';
+
+@import 'layout/navigation';
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/forms';
+@import 'layout/table';
+
+@import 'views/admin/alta-examen';
+@import 'views/admin/alta-tematica';

@@ -1,48 +1,24 @@
-<?php
-include("include/bd.php");
-include("include/Sesion.php");
-include("include/Login.php");
-
-Sesion::iniciar();
-if (!Login::UsuarioEstaLogueado()) {
-    header("Location:login.php");
-}
-
-if (isset($_POST["aceptar"])) {
-    BD::conecta();
-    if ($_POST["nombre"] != "") {
-        $tematica = new Tematica(NULL, $_POST["nombre"]);
-        BD::insertaTematica($tematica);
-        var_dump($tematica);
-    } else {
-        echo '<script>alert("Inserte todos los datos")</script>';
-    }
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilos/css/main.css">
     <title>Document</title>
-    <link rel="stylesheet" href="../estilos/css/main.css">
 </head>
-
 <body>
-
     <header>
         <section>
-            <img src="../estilos/images/logo.png" height="150px">
+            <img src="estilos/images/logo.png" height="150px">
         </section>
 
         <section class="cuenta">
             <ul>
                 <li class="categoria">
-                    <img src="../estilos/images/sesion.png" height="100px">
+                    <img src="estilos/images/sesion.png" height="100px">
                     <ul class="submenu">
-                        <li><a href="ajax/logoff.php">Cerrar sesión</a></li>
+                        <li><a href="php/ajax/logoff.php">Cerrar sesión</a></li>
                         <li><a href="formUsuario.php">Usuario</a></li>
                     </ul>
                 </li>
@@ -55,60 +31,44 @@ if (isset($_POST["aceptar"])) {
     <nav>
         <ul>
             <li class="categoria">
-                <a href="../usuarios.html">Usuarios</a>
+                <a href="usuarios.html">Usuarios</a>
                 <ul class="submenu">
-                    <li><a href="alta-usuario-admin.php">Alta de usuario</a></li>
+                    <li><a href="php\alta-usuario-admin.php">Alta de usuario</a></li>
                     <li><a href="#">Alta masiva</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="../tematicas.html">Tematicas</a>
+                <a href="tematicas.html">Tematicas</a>
                 <ul class="submenu">
-                    <li><a href="alta-tematica.php">Alta temática</a></li>
+                    <li><a href="php\alta-tematica.php">Alta temática</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="../preguntas.html">Preguntas</a>
+                <a href="preguntas.html">Preguntas</a>
                 <ul class="submenu">
-                    <li><a href="alta-pregunta.php">Alta pregunta</a></li>
+                    <li><a href="php\alta-pregunta.php">Alta pregunta</a></li>
                     <li><a href="#">Alta masiva</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="../examenes.html">Examenes</a>
+                <a href="examenes.html">Examenes</a>
                 <ul class="submenu">
-                    <li><a href="../alta-examen.html">Alta de examen</a></li>
-                    <li><a href="../inicio.html">Histórico</a></li>
+                    <li><a href="alta-examen.html">Alta de examen</a></li>
+                    <li><a href="inicio.html">Histórico</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
-
-
-    <form action="" method="post" id="formTematica">
-        <fieldset>
-            <legend>Alta temática</legend>
-            <p>
-                <label for="nombre">Descripción</label><br>
-                <input type="text" name="nombre" id="nombre"><br>
-            </p>
-
-            <p> 
-                <input type="submit" id="aceptar" name="aceptar" value="Aceptar">
-            </p>
-
-        </fieldset>
-
-    </form>
-    <footer>
-        <hr>
+    
+<footer>
+    <hr>
         <section class="izq">
             <ul>
                 <li><a href="">Guía de estilo</a></li>
                 <li><a href="">Mapa del sitio web</a></li>
             </ul>
         </section>
-
+        
         <section class="cent">
             <h3>Enlaces relacionados</h3>
             <ul>
@@ -126,8 +86,8 @@ if (isset($_POST["aceptar"])) {
                 <li>Redes sociales</li>
             </ul>
         </section>
-
-    </footer>
+        
+</footer>
 </body>
 
 </html>
