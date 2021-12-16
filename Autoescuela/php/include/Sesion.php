@@ -9,6 +9,11 @@ class Sesion
         }
     }
 
+    public static function usuario()
+    {
+        return $_SESSION['login'];
+    }
+
     public static function leer(string $clave)
     {
         return isset($_SESSION[$clave])?$_SESSION[$clave]:"";

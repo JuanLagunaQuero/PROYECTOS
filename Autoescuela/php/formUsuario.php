@@ -2,24 +2,65 @@
 include("include/bd.php");
 include("include/Login.php");
 
-$correo = $_GET['correo'];
-
 BD::conecta();
+if(isset($_GET['correo']))
+{
+    $correo = $_GET['correo'];
 
-$u = BD::leeUsuario($correo);
+    $u = BD::leeUsuario($correo);
+    
+    if (isset($_POST["guardar"])) {
+        if (isset($_POST["correo"]) && $_POST["nombre"] != "" && $_POST["apellidos"] != "" && $_POST["fecha_nacimiento"] != "" && $_POST["contrasena"]) {
+    
+            BD::actualizaUsuario($u->getid_usuario(), $_POST["nombre"], $_POST["apellidos"], $_POST["contrasena"], $_POST["fecha_nacimiento"], NULL);
+    
+            BD::borraConfirmacion($u->getid_usuario());
+    
+            Login::Identifica($_POST["correo"], $_POST["contrasena"], false);
+            if (Login::UsuarioEstaLogueado()) {
+                Sesion::escribir('usuario', BD::leeUsuario($_POST["correo"], $_POST["contrasena"]));
+                header("Location: ../inicio.html");
+            }
+        } else {
+            echo '<script> alert("Inserte todos los datos")</script>';
+        }
+    }
+}
+else
+{
+    Sesion::iniciar();
+    if (!Login::UsuarioEstaLogueado()) {
+        header("Location:login.php");
+    }
+
+    $correo = Sesion::usuario();
+
+    $u = BD::leeUsuario($correo);
+
+    if (isset($_POST["guardar"])) {
+        if (isset($_POST["correo"]) && $_POST["nombre"] != "" && $_POST["apellidos"] != "" && $_POST["fecha_nacimiento"] != "" && $_POST["contrasena"]) {
+    
+            BD::actualizaUsuario($u->getid_usuario(), $_POST["nombre"], $_POST["apellidos"], $_POST["contrasena"], $_POST["fecha_nacimiento"], NULL);
+    
+
+
+        } else {
+            echo '<script> alert("Inserte todos los datos")</script>';
+        }
+    }
+
+}
+
+    BD::conecta();
+    
+    
 
 if (isset($_POST["guardar"])) {
     if (isset($_POST["correo"]) && $_POST["nombre"] != "" && $_POST["apellidos"] != "" && $_POST["fecha_nacimiento"] != "" && $_POST["contrasena"]) {
 
         BD::actualizaUsuario($u->getid_usuario(), $_POST["nombre"], $_POST["apellidos"], $_POST["contrasena"], $_POST["fecha_nacimiento"], NULL);
 
-        BD::borraConfirmacion($u->getid_usuario());
-
-        Login::Identifica($_POST["correo"], $_POST["contrasena"], false);
-        if (Login::UsuarioEstaLogueado()) {
-            Sesion::escribir('usuario', BD::leeUsuario($_POST["correo"], $_POST["contrasena"]));
-            header("Location: ../inicio.html");
-        }
+        header("Location: ../inicio.html");
     } else {
         echo '<script> alert("Inserte todos los datos")</script>';
     }
@@ -33,6 +74,7 @@ if (isset($_POST["guardar"])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../estilos/css/main.css">
     <title>Alta usuario</title>
 </head>
 
@@ -60,30 +102,30 @@ if (isset($_POST["guardar"])) {
     <nav>
         <ul>
             <li class="categoria">
-                <a href="../usuarios.html">Usuarios</a>
+                <a href="../admin/usuarios.html">Usuarios</a>
                 <ul class="submenu">
                     <li><a href="alta-usuario-admin.php">Alta de usuario</a></li>
                     <li><a href="#">Alta masiva</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="../tematicas.html">Tematicas</a>
+                <a href="../admin/tematicas.html">Tematicas</a>
                 <ul class="submenu">
                     <li><a href="alta-tematica.php">Alta temática</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="../preguntas.html">Preguntas</a>
+                <a href="../admin/preguntas.html">Preguntas</a>
                 <ul class="submenu">
                     <li><a href="alta-pregunta.php">Alta pregunta</a></li>
                     <li><a href="#">Alta masiva</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="../examenes.html">Examenes</a>
+                <a href="../admin/examenes.html">Examenes</a>
                 <ul class="submenu">
-                    <li><a href="../alta-examen.html">Alta de examen</a></li>
-                    <li><a href="../inicio.html">Histórico</a></li>
+                    <li><a href="../admin/alta-examen.html">Alta de examen</a></li>
+                    <li><a href="../admin/inicio.html">Histórico</a></li>
                 </ul>
             </li>
         </ul>
@@ -100,7 +142,8 @@ if (isset($_POST["guardar"])) {
         <label for="fecha_nacimiento">Fecha de nacimiento</label><br>
         <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="<?php echo $u->getfecha_nacimiento(); ?>"><br><br>
         <label for="contrasena">Contraseña</label><br>
-        <input type="password" id="contrasena" name="contrasena"><br><br>
+        <input type="password" id="contrasena" name="contrasena" value="<?php if(isset($_GET['correo'])){return null;}else{echo $u->getfecha_nacimiento(); }
+        ?>"><br><br>
         <input type="submit" id="guardar" name="guardar" value="Guardar">
     </form>
 

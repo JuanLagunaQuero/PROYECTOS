@@ -2,6 +2,7 @@
 include("include/bd.php");
 include("include/Sesion.php");
 include("include/Login.php");
+BD::conecta();
 
 Sesion::iniciar();
 if (!Login::UsuarioEstaLogueado()) {
@@ -17,18 +18,30 @@ if (isset($_POST["aceptar"])) {
             NULL,
             $_POST["enunciado"],
             $_POST["tematica"],
-            $_POST["correcta"],
+            NULL,
             NULL,
             [$_POST["opcion1"], $_POST["opcion2"], $_POST["opcion3"], $_POST["opcion4"]]
         );
 
         BD::insertaPregunta($p);
+
+        $id_pregunta = BD::leeIdPregunta($_POST["enunciado"]);
+
+        foreach($p->getrespuestas() as $respuesta)
+        {
+            $r = new Respuesta(null, $respuesta, $id_pregunta);
+            BD::insertaRespuestas($r);
+        }
+
+        $rc = BD::leeIdRespuesta($_POST[$_POST["correcta"]]);
+
+        BD::asignaRespuestaCorrecta($id_pregunta, $rc);
+
     } else {
         echo '<script>alert("Inserte todos los datos")</script>';
     }
 }
 
-BD::conecta();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,30 +79,30 @@ BD::conecta();
     <nav>
         <ul>
             <li class="categoria">
-                <a href="../usuarios.html">Usuarios</a>
+                <a href="../admin/usuarios.html">Usuarios</a>
                 <ul class="submenu">
                     <li><a href="alta-usuario-admin.php">Alta de usuario</a></li>
                     <li><a href="#">Alta masiva</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="../tematicas.html">Tematicas</a>
+                <a href="../admin/tematicas.html">Tematicas</a>
                 <ul class="submenu">
                     <li><a href="alta-tematica.php">Alta temática</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="../preguntas.html">Preguntas</a>
+                <a href="../admin/preguntas.html">Preguntas</a>
                 <ul class="submenu">
                     <li><a href="alta-pregunta.php">Alta pregunta</a></li>
                     <li><a href="#">Alta masiva</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="../examenes.html">Examenes</a>
+                <a href="../admin/examenes.html">Examenes</a>
                 <ul class="submenu">
-                    <li><a href="../alta-examen.html">Alta de examen</a></li>
-                    <li><a href="../inicio.html">Histórico</a></li>
+                    <li><a href="../admin/alta-examen.html">Alta de examen</a></li>
+                    <li><a href="../admin/inicio.html">Histórico</a></li>
                 </ul>
             </li>
         </ul>

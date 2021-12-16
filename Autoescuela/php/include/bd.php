@@ -1,5 +1,6 @@
 <?php
 
+require_once('Examen-Pregunta.php');
 require_once('Examen-hecho.php');
 require_once('Examen.php');
 require_once('Pregunta.php');
@@ -36,7 +37,7 @@ class BD
     public static function insertaUsuario(Usuario $u)
     {
         self::$con->exec("INSERT INTO `usuario` (`id_usuario`, `correo`, `nombre`, `apellidos`, `contrasena`, `fecha_nacimiento`, `rol`, `foto`) 
-        VALUES (NULL, '" . $u->getcorreo() . "', '" . $u->getnombre() . "', '" . $u->getapellidos() . "', 'CONTRASEÑA', '" . $u->getfecha_nacimiento() . "', '" . $u->getrol() . "', NULL)");
+        VALUES (NULL, '" . $u->getcorreo() . "', '" . $u->getnombre() . "', '" . $u->getapellidos() . "', 'CONTRASENA', '" . $u->getfecha_nacimiento() . "', '" . $u->getrol() . "', NULL)");
     }
 
     public static function leeCorreo($id_usuario)
@@ -46,6 +47,32 @@ class BD
             $correo = $registro['correo'];
         }
         return $correo;
+    }
+
+    public static function rolUsuario($correo)
+    {
+        $result = self::$con->query("SELECT `rol` FROM `usuario` WHERE correo = '$correo'");
+        while ($registro = $result->fetch(PDO::FETCH_ASSOC)) {
+            $rol = $registro['rol'];
+        }
+        return $rol;
+    }
+
+    public static function obtieneUsuariosPaginados(int $pagina, int $filas):array
+    {
+        $registros = array();
+        $res = self::$con->query("SELECT * FROM `usuario`");
+        $registros =$res->fetchAll();
+        $total = count($registros);
+        $paginas = ceil($total /$filas);
+        $registros = array();
+        if ($pagina <= $paginas)
+        {
+            $inicio = ($pagina-1) * $filas;
+            $res= self::$con->query("SELECT * FROM `usuario` limit $inicio, $filas");
+            $registros = $res->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return $registros;
     }
 
     public static function leeUsuario($correo)
@@ -108,9 +135,9 @@ class BD
         // cambiar a 0 para no ver mensajes de error
         $mail->SMTPDebug  = 2;
         $mail->SMTPAuth   = true;
-        $mail->SMTPSecure = "tls";
+        $mail->SMTPSecure = "ssl";
         $mail->Host       = "smtp.gmail.com";
-        $mail->Port       = 587;
+        $mail->Port       = 465;
         // introducir usuario de google
         $mail->Username   = "autoescuelaproyecto@gmail.com";
         // introducir clave
@@ -162,10 +189,10 @@ class BD
     }
 
     //PREGUNTAS
-    public static function insertaPregunta(Pregunta $pregunta)
+    public static function insertaPregunta(Pregunta $p)
     {
         self::$con->exec("INSERT INTO `pregunta` (`id_pregunta`, `enunciado`, `id_tematica`, `id_respuesta_correcta`, `recurso`)
-        VALUES (NULL, '" . $pregunta->getenunciado() . "', '" . $pregunta->getid_tematica() . "', NULL, NULL)");
+        VALUES (NULL, '".$p->getenunciado()."', '".$p->getid_tematica()."', NULL, NULL)");
     }
 
     public static function leePreguntas(): array
@@ -193,17 +220,63 @@ class BD
         return $preguntas;
     }
 
-
-    //RESPUESTA
-    public static function insertaRespuestas($respuestas)
+    public static function leeIdPregunta($enunciado)
     {
+        $result = self::$con->query("SELECT `id_pregunta` FROM `pregunta` WHERE enunciado LIKE '".$enunciado."'");
+        while ($registro = $result->fetch(PDO::FETCH_ASSOC)) {
+            $id = $registro['id_pregunta'];
+        }
+        return $id;
     }
 
+    public static function asignaRespuestaCorrecta($id_pregunta, $id_respuesta_correcta)
+    {
+        self::$con->exec("UPDATE `pregunta` SET `id_respuesta_correcta` = '$id_respuesta_correcta' 
+        WHERE `pregunta`.`id_pregunta` = $id_pregunta");
+    }
+
+    public static function actualizaPregunta($id, $enunciado, $id_tematica, $id_respuesta_correcta)
+    {
+        self::$con->exec("UPDATE `pregunta` SET `enunciado` = '$enunciado', `$id_tematica` = '6', `id_respuesta_correcta` = '$id_respuesta_correcta' 
+        WHERE `pregunta`.`id_pregunta` = $id");
+    }
+
+    //RESPUESTA
+    public static function insertaRespuestas(Respuesta $r)
+    {
+        self::$con->exec("INSERT INTO `respuesta` (`id_respuesta`, `contenido`, `id_pregunta`)
+        VALUES (NULL, '".$r->getcontenido()."', '".$r->getid_pregunta()."')");
+    }
+
+    public static function leeIdRespuesta($contenido)
+    {
+        $result = self::$con->query("SELECT `id_respuesta` FROM `respuesta` WHERE contenido = '".$contenido."'");
+        while ($registro = $result->fetch(PDO::FETCH_ASSOC)) {
+            $id = $registro['id_respuesta'];
+        }
+        return $id;
+    }
+    
 
     //EXAMEN
-    public function insertaExamen(Examen $e)
+    public static function insertaExamen(Examen $e)
     {
-        self::$con->exec("INSERT INTO `examen` (`id_examen`, `descripcion`, `numero_preguntas`, `duracion`, `activo`)
-         VALUES (NULL, '".$e->getdescripcion()."', '".$e->getnumero_preguntas()."', '".$e->getduracion()."', '0')");
+        self::$con->exec("INSERT INTO `examen` (`id_examen`, `descripcion`, `numero_preguntas`, `duracion`)
+         VALUES (NULL, '".$e->getdescripcion()."', '".$e->getnumero_preguntas()."', '".$e->getduracion()."')");
+    }
+
+    public static function leeIdExamen($descripcion)
+    {
+        $result = self::$con->query("SELECT `id_examen` FROM `examen` WHERE descripcion = '$descripcion'");
+        while ($registro = $result->fetch(PDO::FETCH_ASSOC)) {
+            $id = $registro['id_examen'];
+        }
+        return $id;
+    }
+
+    //EXAMEN-PREGUNTA
+    public static function insertaExamen_Pregunta(Examen_Pregunta $ep)
+    {
+        self::$con->exec("INSERT INTO `examen-pregunta` (`id_examen`, `id_pregunta`) VALUES ('".$ep->getid_examen()."', '".$ep->getid_pregunta()."')");
     }
 }

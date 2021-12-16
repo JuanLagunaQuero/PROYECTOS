@@ -3,18 +3,22 @@ main{
 }
 
 #preguntas{
+    overflow-y: scroll;
     margin-top: 5px;
     float: left;
     width: 100%;
-    min-height: 200px;
+    min-height: 208px;
+    max-height: 208px;
     border: 2px solid black;
 }
 
 #seleccionadas{
+    overflow-y: scroll;
     margin-top: 5px;
     width: 100%;
     float: left;
-    min-height: 200px;
+    min-height: 208px;
+    max-height: 208px;
     border: 2px solid black;
 }
 
@@ -30,24 +34,20 @@ main{
 }
 
 #izq{
-    width: 30%;
+    width: 31%;
     float: left;
 }
 
 #der{
-    width: 30%;
+    width: 31%;
     float: right;
     
 }
 
 div.marcado{
-    border:3px solid black;
+    border:1px solid blue;
 }
 
 div.oculto{
     display:none;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 99f4ee7a40eef6ccd84fbb095dcd44fe1527fc8f
