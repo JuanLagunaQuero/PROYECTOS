@@ -1,27 +1,12 @@
 <?php
-include("include/bd.php");
-include("include/Sesion.php");
-include("include/Login.php");
+include("../php/include/bd.php");
+include("../php/include/Sesion.php");
+include("../php/include/Login.php");
 
 Sesion::iniciar();
 if (!Login::UsuarioEstaLogueado()) {
-    header("Location:login.php");
+    header("Location: ../php/login.php");
 }
-
-if (isset($_POST["guardar"])) {
-    BD::conecta();
-    if ($_POST["correo"] != "" && isset($_POST["nombre"]) && isset($_POST["apellidos"]) && isset($_POST["fecha_nacimiento"]) && isset($_POST["rol"])) {
-        $usuario = new Usuario(NULL, $_POST["correo"], $_POST["nombre"], $_POST["apellidos"], "CONTRASENA", $_POST["fecha_nacimiento"], $_POST["rol"], 0, NULL);
-        BD::insertaUsuario($usuario);
-
-        $u = BD::leeUsuario($_POST["correo"]);
-
-        BD::insertaUsuarioConfirmar($u);
-    } else {
-        echo '<script> alert("Inserte todos los datos")</script>';
-    }
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,8 +16,7 @@ if (isset($_POST["guardar"])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../estilos/css/main.css">
-
-    <title>Alta usuario</title>
+    <title>Document</title>
 </head>
 
 <body>
@@ -46,8 +30,8 @@ if (isset($_POST["guardar"])) {
                 <li class="categoria">
                     <img src="../estilos/images/sesion.png" height="100px">
                     <ul class="submenu">
-                        <li><a href="ajax/logoff.php">Cerrar sesión</a></li>
-                        <li><a href="formUsuario.php">Usuario</a></li>
+                        <li><a href="../php/ajax/logoff.php">Cerrar sesión</a></li>
+                        <li><a href="../php/formUsuario.php">Usuario</a></li>
                     </ul>
                 </li>
             </ul>
@@ -61,20 +45,20 @@ if (isset($_POST["guardar"])) {
             <li class="categoria">
                 <a href="../admin/usuarios.php">Usuarios</a>
                 <ul class="submenu">
-                    <li><a href="alta-usuario-admin.php">Alta de usuario</a></li>
+                    <li><a href="../php/alta-usuario-admin.php">Alta de usuario</a></li>
                     <li><a href="#">Alta masiva</a></li>
                 </ul>
             </li>
             <li class="categoria">
                 <a href="../admin/tematicas.php">Tematicas</a>
                 <ul class="submenu">
-                    <li><a href="alta-tematica.php">Alta temática</a></li>
+                    <li><a href="../php/alta-tematica.php">Alta temática</a></li>
                 </ul>
             </li>
             <li class="categoria">
                 <a href="../admin/preguntas.php">Preguntas</a>
                 <ul class="submenu">
-                    <li><a href="alta-pregunta.php">Alta pregunta</a></li>
+                    <li><a href="../php/alta-pregunta.php">Alta pregunta</a></li>
                     <li><a href="#">Alta masiva</a></li>
                 </ul>
             </li>
@@ -82,33 +66,15 @@ if (isset($_POST["guardar"])) {
                 <a href="../admin/examenes.php">Examenes</a>
                 <ul class="submenu">
                     <li><a href="../admin/alta-examen.php">Alta de examen</a></li>
-                    <li><a href="../admin/inicio.php">Histórico</a></li>
+                    <li><a href="../admin/admin-inicio.php">Histórico</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
+    
+    <main>
 
-    <form action="" method="post">
-        <fieldset>
-            <legend>Alta usuario</legend>
-            <label for="correo">Correo</label><br>
-            <input type="email" name="correo" id="correo"><br><br>
-            <label for="nombre">Nombre</label><br>
-            <input type="text" name="nombre" id="nombre"><br><br>
-            <label for="apellidos">Apellidos</label><br>
-            <input type="text" name="apellidos" id="apellidos"><br><br>
-            <label for="fecha_nacimiento">Fecha de nacimiento</label><br>
-            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento"><br><br>
-            <label for="rol">Rol</label><br>
-            <select name="rol" id="rol">
-                <option value="administrador">Administrador</option>
-                <option value="alumno">Alumno</option>
-            </select><br><br>
-            <input type="submit" id="guardar" name="guardar" value="Guardar">
-
-        </fieldset>
-
-    </form>
+    </main>
 
     <footer>
         <hr>
@@ -138,7 +104,7 @@ if (isset($_POST["guardar"])) {
         </section>
 
     </footer>
-</body>
 
+</body>
 
 </html>

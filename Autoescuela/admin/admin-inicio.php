@@ -1,3 +1,13 @@
+<?php
+include("../php/include/bd.php");
+include("../php/include/Sesion.php");
+include("../php/include/Login.php");
+
+Sesion::iniciar();
+if (!Login::UsuarioEstaLogueado()) {
+    header("Location: ../php/login.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -28,26 +38,39 @@
             </section>
     
         </header>
-    
+
         <nav>
-            <ul>
-                <li class="categoria">
+        <ul>
+            <li class="categoria">
+                <a href="../admin/usuarios.php">Usuarios</a>
+                <ul class="submenu">
+                    <li><a href="../php/alta-usuario-admin.php">Alta de usuario</a></li>
+                    <li><a href="#">Alta masiva</a></li>
+                </ul>
+            </li>
+            <li class="categoria">
+                <a href="../admin/tematicas.php">Tematicas</a>
+                <ul class="submenu">
+                    <li><a href="../php/alta-tematica.php">Alta temática</a></li>
+                </ul>
+            </li>
+            <li class="categoria">
+                <a href="../admin/preguntas.php">Preguntas</a>
+                <ul class="submenu">
+                    <li><a href="../php/alta-pregunta.php">Alta pregunta</a></li>
+                    <li><a href="#">Alta masiva</a></li>
+                </ul>
+            </li>
+            <li class="categoria">
+                <a href="../admin/examenes.php">Examenes</a>
+                <ul class="submenu">
+                    <li><a href="../admin/alta-examen.php">Alta de examen</a></li>
+                    <li><a href="../admin/admin-inicio.php">Histórico</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
     
-                <a href="alumno-inicio.html">Histórico</a>
-    
-                </li>
-                <li class="categoria">
-                    <a href="alumno-examen-predefinido.html">Examen predefinido</a>
-                    
-                </li>
-                <li class="categoria">
-                    <a href="alumno-examen-aleatorio.html">Examen aleatorio</a>
-    
-                </li>
-    
-    
-            </ul>
-        </nav>
     <main>
         <table>
             

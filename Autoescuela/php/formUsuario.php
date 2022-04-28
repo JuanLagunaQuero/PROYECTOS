@@ -19,7 +19,17 @@ if(isset($_GET['correo']))
             Login::Identifica($_POST["correo"], $_POST["contrasena"], false);
             if (Login::UsuarioEstaLogueado()) {
                 Sesion::escribir('usuario', BD::leeUsuario($_POST["correo"], $_POST["contrasena"]));
-                header("Location: ../inicio.html");
+                if(BD::rolUsuario(Sesion::usuario())=="administrador")
+                {
+                    header("Location: ../admin/admin-inicio.php");
+                }
+                else
+                {
+                    if(BD::rolUsuario(Sesion::usuario())=="alumno")
+                    {
+                        header("Location: ../alumno/alumno-inicio.php");
+                    }
+                }
             }
         } else {
             echo '<script> alert("Inserte todos los datos")</script>';
@@ -30,7 +40,7 @@ else
 {
     Sesion::iniciar();
     if (!Login::UsuarioEstaLogueado()) {
-        header("Location:login.php");
+        header("Location: login.php");
     }
 
     $correo = Sesion::usuario();
@@ -41,8 +51,19 @@ else
         if (isset($_POST["correo"]) && $_POST["nombre"] != "" && $_POST["apellidos"] != "" && $_POST["fecha_nacimiento"] != "" && $_POST["contrasena"]) {
     
             BD::actualizaUsuario($u->getid_usuario(), $_POST["nombre"], $_POST["apellidos"], $_POST["contrasena"], $_POST["fecha_nacimiento"], NULL);
-    
-
+            
+            if(BD::rolUsuario(Sesion::usuario())=="administrador")
+            {
+                header("Location: ../admin/admin-inicio.php");
+            }
+            else
+            {
+                if(BD::rolUsuario(Sesion::usuario())=="alumno")
+                {
+                    header("Location: ../alumno/alumno-inicio.php");
+                }
+            }
+            
 
         } else {
             echo '<script> alert("Inserte todos los datos")</script>';
@@ -51,20 +72,6 @@ else
 
 }
 
-    BD::conecta();
-    
-    
-
-if (isset($_POST["guardar"])) {
-    if (isset($_POST["correo"]) && $_POST["nombre"] != "" && $_POST["apellidos"] != "" && $_POST["fecha_nacimiento"] != "" && $_POST["contrasena"]) {
-
-        BD::actualizaUsuario($u->getid_usuario(), $_POST["nombre"], $_POST["apellidos"], $_POST["contrasena"], $_POST["fecha_nacimiento"], NULL);
-
-        header("Location: ../inicio.html");
-    } else {
-        echo '<script> alert("Inserte todos los datos")</script>';
-    }
-}
 
 ?>
 <!DOCTYPE html>
@@ -142,8 +149,7 @@ if (isset($_POST["guardar"])) {
         <label for="fecha_nacimiento">Fecha de nacimiento</label><br>
         <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="<?php echo $u->getfecha_nacimiento(); ?>"><br><br>
         <label for="contrasena">Contraseña</label><br>
-        <input type="password" id="contrasena" name="contrasena" value="<?php if(isset($_GET['correo'])){return null;}else{echo $u->getfecha_nacimiento(); }
-        ?>"><br><br>
+        <input type="password" id="contrasena" name="contrasena" value="<?php echo $u->getfecha_nacimiento(); ?>">
         <input type="submit" id="guardar" name="guardar" value="Guardar">
     </form>
 

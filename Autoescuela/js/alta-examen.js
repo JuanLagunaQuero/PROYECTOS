@@ -118,7 +118,6 @@ window.addEventListener("load", function () {
                 .then(function (response) {
                     if (response.ok) {
                         
-                        Location.reload();
                         //return response.text()
                     } else {
                         throw "Error en la llamada Ajax";

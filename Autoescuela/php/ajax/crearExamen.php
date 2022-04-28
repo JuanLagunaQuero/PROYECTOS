@@ -3,7 +3,6 @@
     BD::conecta();
     if(isset($_POST['descripcion']) && isset($_POST['duracion']))
     {
-        var_dump($_POST);
         $descripcion = $_POST['descripcion'];
         $numeropreguntas = $_POST['numeropreguntas'];
         $duracion = $_POST['duracion'];

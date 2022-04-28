@@ -58,6 +58,27 @@ class BD
         return $rol;
     }
 
+    public static function leeUsuarios()
+    {
+        $usuarios = array();
+        $resultado = self::$con->query("SELECT * FROM `usuario`");
+        while ($registro = $resultado->fetch()) {
+            $u = new Usuario(
+                $registro['id_usuario'],
+                $registro['correo'],
+                $registro['nombre'],
+                $registro['apellidos'],
+                $registro['contrasena'],
+                date($registro['fecha_nacimiento']),
+                $registro['rol'],
+                $registro['foto'],
+            );
+            $usuarios[] = $u;
+        }
+        return $usuarios;
+    
+    }
+
     public static function obtieneUsuariosPaginados(int $pagina, int $filas):array
     {
         $registros = array();
@@ -73,6 +94,12 @@ class BD
             $registros = $res->fetchAll(PDO::FETCH_ASSOC);
         }
         return $registros;
+    }
+
+    public static function cuentaExamenesHechos($id_usuario)
+    {
+        $result = self::$con->query("SELECT COUNT(*) FROM `examen-hecho` WHERE `id_alumno` = '".$id_usuario."'");
+        return $result;
     }
 
     public static function leeUsuario($correo)
@@ -272,6 +299,31 @@ class BD
             $id = $registro['id_examen'];
         }
         return $id;
+    }
+
+    public static function leerExamenes()
+    {
+
+        $examenes = array();
+        $resultado = self::$con->query("SELECT * FROM `examen`");
+        while ($registro = $resultado->fetch()) {
+            $e = new Examen(
+                $registro['id_examen'],
+                $registro['descripcion'],
+                $registro['numero_preguntas'],
+                $registro['duracion'],
+            );
+            $examenes[] = $e;
+        }
+        return $examenes;
+    
+    }
+
+    public static function borrarExamen($id_examen)
+    {
+        self::$con->exec("DELETE FROM `examen-pregunta` WHERE `id_examen` = '".$id_examen."'");
+        self::$con->exec("DELETE FROM `examen` WHERE `id_examen` = '".$id_examen."'");
+
     }
 
     //EXAMEN-PREGUNTA

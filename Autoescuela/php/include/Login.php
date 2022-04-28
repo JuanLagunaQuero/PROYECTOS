@@ -4,18 +4,18 @@ require_once "Sesion.php";
 require_once "bd.php";
 class Login
 {
-    public static function Identifica($correo,  $contrasena, bool $recuerdame)
+    public static function Identifica($correo,  $contrasena)
     {
         if (self::Existeusuario($correo, $contrasena)) {
             Sesion::iniciar();
             Sesion::escribir('login', $correo);
-            if ($recuerdame) {
-                setcookie('recuerdame', $correo, time() + 30 * 24 * 60 * 60);
-            }
+            
+            setcookie('recuerdame', $correo, time() + 30 * 24 * 60 * 60);
+            
             return true;
         }
         else{
-            echo "no existe";
+            echo "El usuario no existe";
         }
         return false;
     }

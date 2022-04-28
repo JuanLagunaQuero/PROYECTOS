@@ -1,3 +1,13 @@
+<?php
+include("../php/include/bd.php");
+include("../php/include/Sesion.php");
+include("../php/include/Login.php");
+
+Sesion::iniciar();
+if (!Login::UsuarioEstaLogueado()) {
+    header("Location: ../php/login.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,6 +16,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../estilos/css/main.css">
+    <script src="../js/alta-examen.js"></script>
     <title>Document</title>
 </head>
 
@@ -33,35 +44,56 @@
     <nav>
         <ul>
             <li class="categoria">
-                <a href="usuarios.html">Usuarios</a>
+                <a href="../admin/usuarios.php">Usuarios</a>
                 <ul class="submenu">
-                    <li><a href="..\php\alta-usuario-admin.php">Alta de usuario</a></li>
+                    <li><a href="../php/alta-usuario-admin.php">Alta de usuario</a></li>
                     <li><a href="#">Alta masiva</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="tematicas.html">Tematicas</a>
+                <a href="../admin/tematicas.php">Tematicas</a>
                 <ul class="submenu">
-                    <li><a href="..\php\alta-tematica.php">Alta temática</a></li>
+                    <li><a href="../php/alta-tematica.php">Alta temática</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="preguntas.html">Preguntas</a>
+                <a href="../admin/preguntas.php">Preguntas</a>
                 <ul class="submenu">
-                    <li><a href="..\php\alta-pregunta.php">Alta pregunta</a></li>
+                    <li><a href="../php/alta-pregunta.php">Alta pregunta</a></li>
                     <li><a href="#">Alta masiva</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="examenes.html">Examenes</a>
+                <a href="../admin/examenes.php">Examenes</a>
                 <ul class="submenu">
-                    <li><a href="alta-examen.html">Alta de examen</a></li>
-                    <li><a href="inicio.html">Histórico</a></li>
+                    <li><a href="../admin/alta-examen.php">Alta de examen</a></li>
+                    <li><a href="../admin/admin-inicio.php">Histórico</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
     <main>
+
+        <div id="general">
+            <label for="descripcion">Descripcion</label>
+            <input type="text" name="descripcion" id="descripcion">
+            <label for="duracion">Duracion</label>
+            <input type="number" name="duracion" id="duracion">
+        </div>
+
+        <section id="izq">
+            <p>Preguntas posibles</p>
+            <input type="text" id="texto"><input type="button" value="filtrar" id="boton">
+            <div id="preguntas"></div>
+        </section>
+
+        <section id="der">
+            <p>Preguntas seleccionadas</p>
+
+            <div id="seleccionadas"></div>
+        </section>
+
+        <input type="submit" value="Crear" id="crear" name="crear">
 
     </main>
 

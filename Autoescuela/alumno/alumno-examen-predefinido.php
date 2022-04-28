@@ -1,3 +1,13 @@
+<?php
+include("../php/include/bd.php");
+include("../php/include/Sesion.php");
+include("../php/include/Login.php");
+
+Sesion::iniciar();
+if (!Login::UsuarioEstaLogueado()) {
+    header("Location: ../php/login.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,15 +43,15 @@
         <ul>
             <li class="categoria">
 
-                <a href="alumno-inicio.html">Histórico</a>
+                <a href="alumno-inicio.php">Histórico</a>
 
             </li>
             <li class="categoria">
-                <a href="alumno-examen-predefinido.html">Examen predefinido</a>
+                <a href="alumno-examen-predefinido.php">Examen predefinido</a>
 
             </li>
             <li class="categoria">
-                <a href="alumno-examen-aleatorio.html">Examen aleatorio</a>
+                <a href="alumno-examen-aleatorio.php">Examen aleatorio</a>
 
             </li>
 

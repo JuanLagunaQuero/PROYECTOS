@@ -14,20 +14,20 @@ if (isset($_POST['enviar'])) {
     else {
 
         // Comprobamos si existe el usuario. Si existe se crea la variable de seion login
-        Login::Identifica($correo, $contrasena, false);
-        echo Sesion::usuario();
+        Login::Identifica($correo, $contrasena);
+
         // Si el usuario es identificado se crea la variable de sesion login
         if (Login::UsuarioEstaLogueado()) {
             Sesion::escribir('usuario', BD::leeUsuario($correo, $contrasena));
             if(BD::rolUsuario(Sesion::usuario())=="administrador")
             {
-                header("Location: ../admin/admin-inicio.html");
+                header("Location: ../admin/admin-inicio.php");
             }
             else
             {
                 if(BD::rolUsuario(Sesion::usuario())=="alumno")
                 {
-                    header("Location: ../alumno/alumno-inicio.html");
+                    header("Location: ../alumno/alumno-inicio.php");
                 }
             }
             

@@ -1,3 +1,14 @@
+<?php
+include("../php/include/bd.php");
+include("../php/include/Sesion.php");
+include("../php/include/Login.php");
+
+Sesion::iniciar();
+if (!Login::UsuarioEstaLogueado()) {
+    header("Location: ../php/login.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -28,48 +39,41 @@
             </section>
     
         </header>
-
+    
         <nav>
             <ul>
                 <li class="categoria">
-                    <a href="usuarios.html">Usuarios</a>
-                    <ul class="submenu">
-                        <li><a href="..\php\alta-usuario-admin.php">Alta de usuario</a></li>
-                        <li><a href="#">Alta masiva</a></li>
-                    </ul>
+    
+                <a href="alumno-inicio.php">Histórico</a>
+    
                 </li>
                 <li class="categoria">
-                    <a href="tematicas.html">Tematicas</a>
-                    <ul class="submenu">
-                        <li><a href="..\php\alta-tematica.php">Alta temática</a></li>
-                    </ul>
+                    <a href="alumno-examen-predefinido.php">Examen predefinido</a>
+                    
                 </li>
                 <li class="categoria">
-                    <a href="preguntas.html">Preguntas</a>
-                    <ul class="submenu">
-                        <li><a href="..\php\alta-pregunta.php">Alta pregunta</a></li>
-                        <li><a href="#">Alta masiva</a></li>
-                    </ul>
+                    <a href="alumno-examen-aleatorio.php">Examen aleatorio</a>
+    
                 </li>
-                <li class="categoria">
-                    <a href="examenes.html">Examenes</a>
-                    <ul class="submenu">
-                        <li><a href="alta-examen.html">Alta de examen</a></li>
-                        <li><a href="inicio.html">Histórico</a></li>
-                    </ul>
-                </li>
+    
+    
             </ul>
         </nav>
-    
-<footer>
-    <hr>
+    <main>
+        <table>
+            
+        </table>
+    </main>
+
+    <footer>
+        <hr>
         <section class="izq">
             <ul>
                 <li><a href="">Guía de estilo</a></li>
                 <li><a href="">Mapa del sitio web</a></li>
             </ul>
         </section>
-        
+
         <section class="cent">
             <h3>Enlaces relacionados</h3>
             <ul>
@@ -87,8 +91,9 @@
                 <li>Redes sociales</li>
             </ul>
         </section>
-        
-</footer>
+
+    </footer>
+
 </body>
 
 </html>

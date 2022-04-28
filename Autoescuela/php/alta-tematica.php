@@ -55,30 +55,30 @@ if (isset($_POST["aceptar"])) {
     <nav>
         <ul>
             <li class="categoria">
-                <a href="../admin/usuarios.html">Usuarios</a>
+                <a href="../admin/usuarios.php">Usuarios</a>
                 <ul class="submenu">
                     <li><a href="alta-usuario-admin.php">Alta de usuario</a></li>
                     <li><a href="#">Alta masiva</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="../admin/tematicas.html">Tematicas</a>
+                <a href="../admin/tematicas.php">Tematicas</a>
                 <ul class="submenu">
                     <li><a href="alta-tematica.php">Alta temática</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="../admin/preguntas.html">Preguntas</a>
+                <a href="../admin/preguntas.php">Preguntas</a>
                 <ul class="submenu">
                     <li><a href="alta-pregunta.php">Alta pregunta</a></li>
                     <li><a href="#">Alta masiva</a></li>
                 </ul>
             </li>
             <li class="categoria">
-                <a href="../admin/examenes.html">Examenes</a>
+                <a href="../admin/examenes.php">Examenes</a>
                 <ul class="submenu">
-                    <li><a href="../admin/alta-examen.html">Alta de examen</a></li>
-                    <li><a href="../admin/inicio.html">Histórico</a></li>
+                    <li><a href="../admin/alta-examen.php">Alta de examen</a></li>
+                    <li><a href="../admin/inicio.php">Histórico</a></li>
                 </ul>
             </li>
         </ul>
