@@ -7,46 +7,9 @@ $c = strpos($_SERVER["PHP_SELF"], "/", $c + 1);
 $inicio = $_SERVER["DOCUMENT_ROOT"] . substr($_SERVER["PHP_SELF"], 0, $c + 1);
 
 require_once "BD.php";
-require $inicio . "include/Entidades/Visita.php";
 
 class BDVisita
 {
-    public static function leeAlumnosUsuario($id_usuario)
-    {
-        $sql = "SELECT
-                    e.id_empresa,
-                    e.nombre_empresa,
-                    s.id_sede,
-                    s.descripcion dsede,
-                    c.id_convenio,
-                    c.fecha_firma,
-                    c.descripcion dconvenio,
-                    dc.id_detalle_convenio,
-                    dc.fecha_inicio,
-                    dc.fecha_fin,
-                    adc.`id_alumno_detalle_convenio`,
-                    adc.nombre_alumno                  
-                   
-                FROM
-                    alumno_detalle_convenio adc
-                    JOIN detalle_convenio dc ON
-                        adc.id_detalle_convenio = dc.id_detalle_convenio
-                    JOIN convenio c ON
-                        dc.id_convenio = c.id_convenio
-                    JOIN sede s ON
-                        s.id_sede = dc.id_sede
-                    JOIN empresa e ON
-                        e.id_empresa = s.id_empresa
-                WHERE 
-                    adc.id_usuario = '$id_usuario'
-                ORDER BY
-                    nombre_empresa,
-                    fecha_firma,
-                    dsede";
-        $resultado = BD::conecta()->query($sql);
-        $fila = $resultado->fetchAll(PDO::FETCH_ASSOC);
-        return $fila;
-    }
 
     public static function leeVisitasAlumno($id_alumno_detalle_convenio)
     {
@@ -56,10 +19,72 @@ class BDVisita
         return $fila;
     }
 
-    public function insertaVisita($v)
+    public static function insertaVisita($fecha_inicio, $hora_inicio, $fecha_fin, $hora_fin, $id_alumno_detalle_convenio)
     {
-        $sql="";
+        BD::conecta()->beginTransaction();
+
+        $sql = "INSERT INTO `visita`(`id_visita`, `fecha_inicio`, `hora_inicio`, `fecha_fin`, `hora_fin`, `id_alumno_detalle_convenio`, `dieta`)
+                VALUES (NULL, '" . $fecha_inicio . "', '" . $hora_inicio . "', '" . $fecha_fin . "', '" . $hora_fin . "', $id_alumno_detalle_convenio, 0)";
+        BD::conecta()->exec($sql);
+
+        $resultado = BD::conecta()->query("SELECT max(`id_visita`) FROM `visita`");
+        BD::conecta()->commit();
+        $fila = $resultado->fetch();
+        return $fila[0];
     }
 
+    public static function borraVisita($id_visita)
+    {
+        $sql = "DELETE FROM `visita` WHERE `id_visita` = $id_visita";
+        BD::conecta()->exec($sql);
+    }
 
+    public static function editarVisita($fecha_inicio, $hora_inicio, $fecha_fin, $hora_fin, $id_visita)
+    {
+        $sql = "UPDATE `visita` SET `fecha_inicio`='" . $fecha_inicio . "',`hora_inicio`='" . $hora_inicio . "',
+                `fecha_fin`='" . $fecha_fin . "',`hora_fin`='" . $hora_fin . "' 
+                WHERE id_visita = $id_visita";
+        BD::conecta()->exec($sql);
+    }
+
+    public static function solapaVisita($fecha_inicio, $hora_inicio, $fecha_fin, $hora_fin, $id_usuario)
+    {
+        $sql = "SELECT
+                    COUNT(*)
+                    FROM
+                    (
+                    SELECT
+                        visita.fecha_inicio,
+                        visita.hora_inicio,
+                        visita.fecha_fin,
+                        visita.hora_fin
+                    FROM
+                        `visita`
+                    JOIN alumno_detalle_convenio ON visita.id_alumno_detalle_convenio = alumno_detalle_convenio.id_alumno_detalle_convenio
+                    WHERE
+                        alumno_detalle_convenio.id_usuario = '$id_usuario'
+                    ) AS a
+
+                    WHERE
+                        (
+                            #comprobamos que fecha inicio queda entre fecha inicio y fecha fin
+                            (
+                                TO_SECONDS('" . $fecha_inicio . " " . $hora_inicio . "') >= TO_SECONDS(a.fecha_inicio) + TO_SECONDS(a.hora_inicio) - TO_SECONDS(CURDATE())
+                                AND TO_SECONDS('" . $fecha_inicio . " " . $hora_inicio . "') <= TO_SECONDS(a.fecha_fin) + TO_SECONDS(a.hora_fin) - TO_SECONDS(CURDATE())
+                            ) OR
+                            #comprobamos que fecha fin queda entre fecha inicio y fecha fin
+                            (
+                                TO_SECONDS('" . $fecha_fin . " " . $hora_fin . "') >= TO_SECONDS(a.fecha_inicio) + TO_SECONDS(a.hora_inicio)  - TO_SECONDS(CURDATE())
+                                AND TO_SECONDS('" . $fecha_fin . " " . $hora_fin . "') <= TO_SECONDS(a.fecha_fin) + TO_SECONDS(a.hora_fin) - TO_SECONDS(CURDATE())
+                            ) OR
+                            #comprobamos que las dos quedan entre fecha inicio y fecha fin
+                            (
+                                TO_SECONDS('" . $fecha_inicio . " " . $hora_inicio . "') <= TO_SECONDS(a.fecha_inicio) + TO_SECONDS(a.hora_inicio)  - TO_SECONDS(CURDATE())
+                                AND TO_SECONDS('" . $fecha_fin . " " . $hora_fin . "') >= TO_SECONDS(a.fecha_fin) + TO_SECONDS(a.hora_fin) - TO_SECONDS(CURDATE())
+                            )
+                        )";
+        $resultado = BD::conecta()->query($sql);
+        $fila = $resultado->fetch();
+        return ($fila [0] == 0);
+    }
 }

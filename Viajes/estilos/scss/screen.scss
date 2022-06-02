@@ -1,0 +1,37 @@
+//VARIABLES
+$bg-color:grey;
+$txt-color-hover:#fff;
+$bg-color-hover:rgb(58, 58, 58);
+
+
+//MIXIN
+@mixin color {
+    background-color: $bg-color;
+}
+
+@mixin box-sizing($bs) {
+    -webkit-box-sizing: $bs;
+    -moz-box-sizing: $bs;
+    box-sizing: $bs;
+}
+
+@mixin color-hover {
+
+    color: $txt-color-hover;
+    background-color: $bg-color-hover;
+}
+
+
+@mixin transiciones($property, $duration, $timing:linear) {
+    -moz-transition: $property $duration $timing;
+    -webkit-transition: $property $duration $timing;
+    transition: $property $duration $timing;
+}
+
+main{
+    margin-left:25px;
+}
+@import "_menunav.scss";
+@import "_login.scss";
+@import "_visitas.scss";
+@import "_footer.scss";

@@ -1,0 +1,16 @@
+nav {
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    @include color;
+    display: flex;
+}
+
+.dropdown-menu {
+    --bs-dropdown-min-width: none;
+    --bs-dropdown-padding-x: none;
+}
+
+
+
+
+        

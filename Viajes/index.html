@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="estilos/bootstrap.min.css">
     <script src="js/bootstrap.bundle.min.js"></script>
 
+    <link rel="stylesheet" href="estilos/css/screen.css">
     <script src="js/js.js"></script>
 </head>
 
@@ -22,6 +23,7 @@
                         <div class="card rounded shadow shadow-sm">
                             <div class="card-header">
                                 <h3 class="mb-0">Login</h3>
+                                <button id="tutoriales" style="float: right;">Tutoriales</button>
                             </div>
                             <div class="card-body">
                                 <form class="form" role="form" id="formLogin" novalidate="" method="GET">
@@ -29,14 +31,15 @@
                                         <label for="usuario">Usuario</label>
                                         <input type="text" class="form-control form-control-lg rounded-0"
                                             placeholder="Usuario" name="usuario" id="usuario" maxlength="50">
+                                            
                                     </div>
                                     <div class="form-group">
                                         <label for="contrasena">Contraseña</label><br />
                                         <input type="password" class="form-control form-control-lg rounded-0"
                                             placeholder="Contraseña" name="contrasena" id="contrasena">
                                     </div>
-                                    <div class="row justify-content-center">
-                                        <button type="submit" class="btn btn-success btn-lg col-3" name="entrar"
+                                    <div class="row justify-content-center btn-login">
+                                        <button type="submit" class="btn btn-success btn-lg float-right" name="entrar"
                                             id="entrar">Entrar</button>
                                     </div>
                                 </form>
@@ -52,7 +55,50 @@
         </div>
         <!--/row-->
     </div>
-    <!--/container-->
+    <header></header>
+    <main></main>
+
+    <!-- Footer -->
+    <footer class="text-center" style="display: none; ">
+
+        <hr>
+        <!-- Grid container -->
+        <div class="container p-4">
+            <!-- Section: Links -->
+            <section class="">
+                <!--Grid row-->
+                <div class="row">
+                    <!--Grid column-->
+                    <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                        <h3>
+                            <a href="">Guía de estilo</a>
+                        </h3>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                        <h2>
+                            <a href="https://seneca.juntadeandalucia.es/seneca/jsp/portal/">SENECA</a>
+                        </h2>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                        <h2>
+                            <a href="https://www.juntadeandalucia.es/averroes/centros-tic/23002449/helvia/sitio/">IES Las Fuentezuelas</a>
+                        </h2>
+                    </div>
+                    <!--Grid column-->
+                </div>
+                <!--Grid row-->
+            </section>
+            <!-- Section: Links -->
+        </div>
+        <!-- Grid container -->
+    </footer>
+    <!-- Footer -->
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 <div class="empresa">
     <h1 class="nombreEmpresa">
-        <button class="btn btn-primary collapsed" type="button" data-bs-toggle="collapse" 
-        data-bs-target="#convenio" aria-expanded="false" aria-controls="convenio">
+        <button class="btn btn-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#convenio"
+            aria-expanded="false" aria-controls="convenio">
             NOMBRE DE LA EMPRESA
         </button>
     </h1>
@@ -19,7 +19,7 @@
                     Sede del detalle convenio
                 </button>
             </h3>
-            <div class="collapse" id="alumnos">
+            <div class="collapse visitas" id="alumnos">
                 <h4 class="nombreAlumno">
                     <button class="btn btn-primary collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#visita" aria-expanded="false" aria-controls="visita">
@@ -38,11 +38,17 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th><input type="date" name="" id=""></th>
-                                <th><input type="time" name="" id=""></th>
-                                <th><input type="date" name="" id=""></th>
-                                <th><input type="time" name="" id=""></th>
-                                <th><button>Guardar</button><button>Borrar</button></th>
+
+                                <td><input type="date" class="fechas" id=""></td>
+                                <td><input type="time" class="h" id=""></td>
+                                <td><input type="date" class="fechas" id=""></td>
+                                <td><input type="time" class="h" id=""></td>
+                                <td>
+                                    <button>Guardar</button>
+                                    <button>Borrar</button>
+                                    <span class="editado" style="display: none;">Fila guardada</span>
+                                    <span class="mal"></span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

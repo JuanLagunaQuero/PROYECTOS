@@ -1,0 +1,10 @@
+footer {
+    @include box-sizing(border-box);
+    bottom: 0;
+    width: 100%;
+    
+    hr {
+        size: 20px;
+    }
+
+}
