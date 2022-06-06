@@ -8,6 +8,10 @@ nav {
 .dropdown-menu {
     --bs-dropdown-min-width: none;
     --bs-dropdown-padding-x: none;
+    .show{
+    background: grey;
+    border: 0;
+    }
 }
 
 

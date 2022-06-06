@@ -94,4 +94,13 @@ class BDUsuario
         $fila = $resultado->fetchAll(PDO::FETCH_ASSOC);
         return $fila;
     }
+
+    public static function reseteaContraseña($id_usuario)
+    {
+        $contrasena = $id_usuario.$id_usuario;
+
+        $sql = "UPDATE `usuario` SET `contrasena`=$contrasena WHERE `id_usuario` = $id_usuario";
+
+        BD::conecta()->exec($sql);
+    }
 }

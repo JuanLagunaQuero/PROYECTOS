@@ -16,6 +16,11 @@ nav {
   --bs-dropdown-padding-x: none;
 }
 
+.dropdown-menu.show {
+  background: grey;
+  border: 0;
+}
+
 div .login {
   background-color: grey;
   -webkit-transition: height 0.5s ease-out;
@@ -81,8 +86,8 @@ div.visitas {
   padding-bottom: 10px;
 }
 
-#checkprofesor {
-  margin-left: 0;
+.btnReseteo {
+  margin-bottom: 10px;
 }
 
 .btn-primary {
@@ -95,7 +100,7 @@ div.visitas {
   --bs-btn-focus-shadow-rgb: 49, 132, 253;
   --bs-btn-active-color: #fff;
   --bs-btn-active-bg: #2c8159;
-  --bs-btn-active-border-color: #12673f ;
+  --bs-btn-active-border-color: #12673f;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
   --bs-btn-disabled-bg: #157347;
@@ -104,7 +109,12 @@ div.visitas {
 
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
   /* Force table to not be like tables anymore */
-  table, thead, tbody, th, td, tr {
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
     display: block;
   }
   /* Hide table headers (but not display: none;, for accessibility) */

@@ -6,9 +6,21 @@ window.addEventListener("load", function () {
 
     btnEntrar.onclick = comprobarUsuario(txtUsuario, txtContrasena);
 
+    var btnTutoriales = document.getElementById("tutoriales");
+
+    var videos = document.getElementById("videos");
+
+    btnTutoriales.onclick = muestraVideos;
+
     comprobarLogueado();
 
 })
+
+function muestraVideos() {
+    var videos = document.getElementById("videos");
+    videos.style.display = "block";
+
+}
 
 function comprobarUsuario(txtUsuario, txtContrasena) {
     return function (ev) {
@@ -104,16 +116,30 @@ function procesarDatos(respuesta) {
         var btnCerrar = document.getElementById("cerrar");
         btnCerrar.onclick = cerrarSesion;
 
+        var btnRG = document.getElementById("resetGordo");
+        btnRG.onclick = confirmaReseteoGordo;
+
         var datosP = respuesta.Profesores;
 
         //console.log(datosP)
 
-        for (let j = 0; j < datosP.length; j++) {
+        for (let x = 0; x < datosP.length; x++) {
+            var nombreCompleto = datosP[x]["nombre"] + " " + datosP[x]["apellidos"];
             var profesor = document.createElement("div");
+            profesor.setAttribute("class", "profesor")
             var nombreprofesor = document.createElement("h5");
-            nombreprofesor.innerHTML = datosP[j]["nombre"] + " " + datosP[j]["apellidos"];
+            nombreprofesor.setAttribute("class", "nombreprofesor")
+            nombreprofesor.innerHTML = nombreCompleto;
             profesor.appendChild(nombreprofesor);
-            var datos = datosP[j]["empresas"];
+            var reset = document.createElement("button");
+            reset.setAttribute("id", datosP[x]["id_usuario"]);
+            reset.setAttribute("class", "btnReseteo");
+            reset.innerHTML = "Resetear contraseña";
+            reset.onclick = confirmaReseteo(nombreCompleto, datosP[x]["id_usuario"]);
+            profesor.appendChild(reset);
+
+
+            var datos = datosP[x]["empresas"];
             //console.log(datos);
 
             var plantilla = traerPlantilla("plantillas/visitas.html");
@@ -141,8 +167,8 @@ function procesarDatos(respuesta) {
                     Empresa = datos[i].nombre_empresa;
                     var copia = plantilla.cloneNode(true);
                     copia.querySelector(".nombreEmpresa").children[0].innerText = Empresa;
-                    copia.querySelector(".nombreEmpresa").children[0].setAttribute("data-bs-target", "#convenio" + datos[i].id_empresa + datosP[j]["id_usuario"]);
-                    copia.querySelector(".nombreEmpresa").children[0].setAttribute("aria-controls", "convenio" + datos[i].id_empresa + datosP[j]["id_usuario"]);
+                    copia.querySelector(".nombreEmpresa").children[0].setAttribute("data-bs-target", "#convenio" + datos[i].id_empresa + datosP[x]["id_usuario"]);
+                    copia.querySelector(".nombreEmpresa").children[0].setAttribute("aria-controls", "convenio" + datos[i].id_empresa + datosP[x]["id_usuario"]);
                     copia.style.marginBottom = 0;
                     Convenio = "";
                 }
@@ -151,9 +177,9 @@ function procesarDatos(respuesta) {
                     Convenio = datos[i].dconvenio;
                     var copiaConvenio = plantillaConvenio.cloneNode(true);
                     copiaConvenio.querySelector(".descrConvenio").children[0].innerText = Convenio;
-                    copiaConvenio.querySelector(".descrConvenio").children[0].setAttribute("data-bs-target", "#detalleConvenio" + datos[i].id_convenio + datosP[j]["id_usuario"]);
-                    copiaConvenio.querySelector(".descrConvenio").children[0].setAttribute("aria-controls", "detalleConvenio" + datos[i].id_convenio + datosP[j]["id_usuario"]);
-                    copiaConvenio.querySelector(".descrConvenio").parentNode.setAttribute("id", "convenio" + datos[i].id_empresa + datosP[j]["id_usuario"]);
+                    copiaConvenio.querySelector(".descrConvenio").children[0].setAttribute("data-bs-target", "#detalleConvenio" + datos[i].id_convenio + datosP[x]["id_usuario"]);
+                    copiaConvenio.querySelector(".descrConvenio").children[0].setAttribute("aria-controls", "detalleConvenio" + datos[i].id_convenio + datosP[x]["id_usuario"]);
+                    copiaConvenio.querySelector(".descrConvenio").parentNode.setAttribute("id", "convenio" + datos[i].id_empresa + datosP[x]["id_usuario"]);
                     copia.appendChild(copiaConvenio);
                     Sede = "";
                 }
@@ -162,9 +188,9 @@ function procesarDatos(respuesta) {
                     Sede = datos[i].dsede;
                     var copiaSede = detalleConvenio.cloneNode(true);
                     copiaSede.querySelector(".sede").children[0].innerText = Sede;
-                    copiaSede.querySelector(".sede").children[0].setAttribute("data-bs-target", "#alumnos" + datos[i].id_sede + datosP[j]["id_usuario"]);
-                    copiaSede.querySelector(".sede").children[0].setAttribute("aria-controls", "alumnos" + datos[i].id_sede + datosP[j]["id_usuario"]);
-                    copiaSede.querySelector(".sede").parentNode.setAttribute("id", "detalleConvenio" + datos[i].id_convenio + datosP[j]["id_usuario"]);
+                    copiaSede.querySelector(".sede").children[0].setAttribute("data-bs-target", "#alumnos" + datos[i].id_sede + datosP[x]["id_usuario"]);
+                    copiaSede.querySelector(".sede").children[0].setAttribute("aria-controls", "alumnos" + datos[i].id_sede + datosP[x]["id_usuario"]);
+                    copiaSede.querySelector(".sede").parentNode.setAttribute("id", "detalleConvenio" + datos[i].id_convenio + datosP[x]["id_usuario"]);
                     copiaConvenio.appendChild(copiaSede);
                     Alumno = "";
                 }
@@ -173,9 +199,13 @@ function procesarDatos(respuesta) {
                     Alumno = datos[i].nombre_alumno;
                     var copiaAlumnos = alumnos.cloneNode(true);
                     copiaAlumnos.querySelector(".nombreAlumno").children[0].innerText = Alumno;
-                    copiaAlumnos.querySelector(".nombreAlumno").children[0].setAttribute("data-bs-target", "#visita" + datos[i].id_alumno_detalle_convenio + datosP[j]["id_usuario"]);
-                    copiaAlumnos.querySelector(".nombreAlumno").children[0].setAttribute("aria-controls", "visita" + datos[i].id_alumno_detalle_convenio + datosP[j]["id_usuario"]);
-                    copiaAlumnos.querySelector(".nombreAlumno").parentNode.setAttribute("id", "alumnos" + datos[i].id_sede + datosP[j]["id_usuario"]);
+                    copiaAlumnos.querySelector(".nombreAlumno").children[0].setAttribute("data-bs-target", "#visita" + datos[i].id_alumno_detalle_convenio + datosP[x]["id_usuario"]);
+                    copiaAlumnos.querySelector(".nombreAlumno").children[0].setAttribute("aria-controls", "visita" + datos[i].id_alumno_detalle_convenio + datosP[x]["id_usuario"]);
+                    copiaAlumnos.querySelector(".nombreAlumno").parentNode.setAttribute("id", "alumnos" + datos[i].id_sede + datosP[x]["id_usuario"]);
+                    var checkAlumno = document.createElement("input");
+                    checkAlumno.setAttribute("type", "checkbox")
+                    checkAlumno.setAttribute("id", datos[i].id_alumno_detalle_convenio)
+                    copiaAlumnos.querySelector(".nombreAlumno").after(checkAlumno);
                     copiaSede.appendChild(copiaAlumnos);
                 }
 
@@ -192,17 +222,23 @@ function procesarDatos(respuesta) {
                         inputs[3].value = datos[i].visitas[j].hora_fin;
                         buttons[0].onclick = programarGuardar(datos[i].visitas[j].id_visita);
                         buttons[1].onclick = programarBorrar(datos[i].visitas[j].id_visita);
-                        copiaVisita.parentElement.parentElement.parentElement.setAttribute("id", "visita" + datos[i].id_alumno_detalle_convenio + datosP[j]["id_usuario"]);
+                        var check = document.createElement("input");
+                        check.setAttribute("type", "checkbox")
+                        check.setAttribute("class", datos[i].id_alumno_detalle_convenio);
+                        check.setAttribute("id", datos[i].visitas[j].id_visita)
+                        buttons[0].parentElement.appendChild(check);
+                        copiaVisita.parentElement.parentElement.parentElement.setAttribute("id", "visita" + datos[i].id_alumno_detalle_convenio + datosP[x]["id_usuario"]);
 
                     }
                 }
                 var copiaVisita = visita.cloneNode(true);
                 tbody.appendChild(copiaVisita);
-                copiaVisita.parentElement.parentElement.parentElement.setAttribute("id", "visita" + datos[i].id_alumno_detalle_convenio + datosP[j]["id_usuario"]);
+                copiaVisita.parentElement.parentElement.parentElement.setAttribute("id", "visita" + datos[i].id_alumno_detalle_convenio + datosP[x]["id_usuario"]);
                 var buttons = copiaVisita.querySelectorAll("button");
                 buttons[0].innerText = "Añadir";
                 buttons[0].onclick = programarInsertar(datos[i].id_alumno_detalle_convenio);
                 buttons[1].parentNode.removeChild(buttons[1]);
+
                 profesor.appendChild(copia);
 
             }
@@ -218,6 +254,7 @@ function procesarDatos(respuesta) {
         var plantillaNav = traerPlantilla("plantillas/nav.html");
         copiaNav = plantillaNav.cloneNode(true);
         copiaNav.querySelector("#dropdownMenu").innerText = respuesta.user;
+        copiaNav.querySelector("#resetGordo").style.display = "none";
 
         //copiaNav.querySelector("#inicio").style.display = "none";
 
@@ -427,4 +464,57 @@ function ponerBonico() {
     var h = document.querySelectorAll(" h1, .collapse h2, .collapse h3")
 
     for (let i = 0; i < h.length; i++) h[i].style.display = "none"
+}
+
+function confirmaReseteo(nombre, id_usuario) {
+    return function (ev) {
+        ev.preventDefault();
+
+        if (confirm("Va a resetear la contraseña del profesor " + nombre + "\n¿Estás seguro?")) {
+
+            resetearContraseña(id_usuario);
+        }
+
+    }
+}
+
+function resetearContraseña(id_usuario) {
+    return function (ev) {
+        ev.preventDefault();
+        var usuario = "id_usuario=" + id_usuario;
+
+        var ajax = new XMLHttpRequest();
+
+        ajax.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var respuesta = JSON.parse(this.responseText);
+                if (respuesta.sucess) {
+                    //comprobarLogueado();
+                    fila.parentElement.removeChild(fila);
+                } 
+            }
+        }
+
+        ajax.open("POST", "php/API/AjaxReset.php");
+        ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        ajax.send(usuario);
+    }
+
+}
+
+function confirmaReseteoGordo(ev) {
+    ev.preventDefault();
+
+    if (confirm("Vas a resetear todas las contraseñas \n¿Estás seguro?")) {
+
+        reseteoTotal();
+    }
+
+}
+
+function reseteoTotal() {
+
+    var alerta = "contraseñas reseteadas";
+    console.log(alerta)
+
 }
