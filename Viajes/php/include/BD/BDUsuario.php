@@ -13,7 +13,7 @@ class BDUsuario
 {
     public static function leeProfesores()
     {
-        $sql = ("SELECT `id_usuario`,`nombre`,`apellidos` FROM usuario WHERE `rol` = 'profesor'");
+        $sql = ("SELECT `id_usuario`,`nombre`,`apellidos` FROM usuario");
         $resultado = BD::conecta()->query($sql);
         $fila = $resultado->fetchAll(PDO::FETCH_ASSOC);
         return $fila;
@@ -99,8 +99,8 @@ class BDUsuario
     {
         $contrasena = $id_usuario.$id_usuario;
 
-        $sql = "UPDATE `usuario` SET `contrasena`=$contrasena WHERE `id_usuario` = $id_usuario";
-
+        $sql = "UPDATE `usuario` SET `contrasena`= '$contrasena' WHERE `id_usuario` = '$id_usuario'";
         BD::conecta()->exec($sql);
     }
+
 }

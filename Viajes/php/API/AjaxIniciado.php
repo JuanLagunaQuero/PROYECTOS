@@ -19,6 +19,7 @@ if (Login::UsuarioEstaLogueado()) {
     if (Sesion::leer("usuario")->getRol() == "administrador") {
         $obj = new stdClass();
         $obj->sucess = true;
+        $obj->id_usuario = Sesion::leer("usuario")->getId_usuario();
         $obj->rol = Sesion::leer("usuario")->getRol();
         $obj->user = Sesion::leer("usuario")->getNombre() . " " . Sesion::leer("usuario")->getApellidos();
         $obj->Profesores = BDUsuario::leeProfesores();

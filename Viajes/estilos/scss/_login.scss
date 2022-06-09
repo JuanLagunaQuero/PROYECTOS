@@ -1,22 +1,18 @@
-div .login {
+.btn-login {
+    margin-top: 2%;
+    text-align: center;
+
+    #entrar {
+        max-width: 50%;
+    }
+}
+
+button.tuto:hover {
     @include color;
     @include transiciones(height, 0.5s, ease-out);
     @include transiciones(width, 0.5s, ease-out);
-
-}
-
-   .btn-login {
-        margin-top: 2%;
-        text-align: center;
-
-        #entrar{
-            max-width: 50%;
-        }
-    }
-
-button#tutoriales:hover {
     height: 35px;
-    width: 100px;
+    width: 150px;
     overflow: hidden;
     @include color-hover;
 }

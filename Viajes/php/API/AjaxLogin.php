@@ -29,9 +29,16 @@ if (empty($id_usuario) || empty($contrasena)) {
     if (Login::UsuarioEstaLogueado()) {
         Sesion::escribir('usuario', BDUsuario::leeUsuario($id_usuario, $contrasena));
 
+        
+        if (Sesion::leer("usuario")->getContrasena()==Sesion::leer("usuario")->getId_usuario().Sesion::leer("usuario")->getId_usuario())
+        {
+            
+        }
+
         if (Sesion::leer("usuario")->getRol() == "administrador") {
             $obj = new stdClass();
             $obj->sucess = true;
+            $obj->id_usuario = Sesion::leer("usuario")->getId_usuario();
             $obj->rol = Sesion::leer("usuario")->getRol();
             $obj->user = Sesion::leer("usuario")->getNombre() . " " . Sesion::leer("usuario")->getApellidos();
             $obj->Profesores = BDUsuario::leeProfesores();

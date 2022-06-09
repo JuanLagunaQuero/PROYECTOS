@@ -1,20 +1,23 @@
 nav {
-    width: 100%;
+    max-width: 100%;
     font-family: Arial, Helvetica, sans-serif;
     @include color;
     display: flex;
 }
 
+.dropdown{
+    align-self: baseline;
+    margin-right: 7%;
+
+}
+
 .dropdown-menu {
     --bs-dropdown-min-width: none;
     --bs-dropdown-padding-x: none;
-    .show{
-    background: grey;
-    border: 0;
-    }
+    min-width: max-content;
 }
 
-
-
-
-        
+.dropdown-menu.show {
+    background: grey;
+    border: 0;
+}

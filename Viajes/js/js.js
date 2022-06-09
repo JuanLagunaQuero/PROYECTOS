@@ -8,9 +8,8 @@ window.addEventListener("load", function () {
 
     var btnTutoriales = document.getElementById("tutoriales");
 
-    var videos = document.getElementById("videos");
-
     btnTutoriales.onclick = muestraVideos;
+
 
     comprobarLogueado();
 
@@ -19,6 +18,23 @@ window.addEventListener("load", function () {
 function muestraVideos() {
     var videos = document.getElementById("videos");
     videos.style.display = "block";
+
+    document.getElementById("tutoriales").style.display = "none";
+
+    var btnTutorialesNo = document.getElementById("tutorialesNo");
+
+    btnTutorialesNo.onclick = ocultaVideos;
+
+
+}
+
+function ocultaVideos() {
+    var videos = document.getElementById("videos");
+    videos.style.display = "none";
+
+    document.getElementById("tutoriales").style.display = "block";
+
+
 
 }
 
@@ -83,7 +99,7 @@ function cerrarSesion() {
         }
     }
 
-    ajax.open("GET", "php/API/AjaxLogoff.php");
+    ajax.open("POST", "php/API/AjaxLogoff.php");
     ajax.send();
 }
 
@@ -116,12 +132,22 @@ function procesarDatos(respuesta) {
         var btnCerrar = document.getElementById("cerrar");
         btnCerrar.onclick = cerrarSesion;
 
-        var btnRG = document.getElementById("resetGordo");
+        var btnCambioContraseña = document.getElementById("autoCambio");
+        btnCambioContraseña.onclick = cambiarContraseña;
+
+
+        var divRes = document.createElement("div");
+        divRes.style.margin = "2%";
+
+        var btnRG = document.createElement("button");
+        btnRG.innerHTML = "Resetear todas las contraseñas";
         btnRG.onclick = confirmaReseteoGordo;
+        btnRG.style.float = "right";
+        divRes.appendChild(btnRG);
+        document.body.querySelector("main").appendChild(divRes);
 
         var datosP = respuesta.Profesores;
 
-        //console.log(datosP)
 
         for (let x = 0; x < datosP.length; x++) {
             var nombreCompleto = datosP[x]["nombre"] + " " + datosP[x]["apellidos"];
@@ -131,12 +157,17 @@ function procesarDatos(respuesta) {
             nombreprofesor.setAttribute("class", "nombreprofesor")
             nombreprofesor.innerHTML = nombreCompleto;
             profesor.appendChild(nombreprofesor);
-            var reset = document.createElement("button");
-            reset.setAttribute("id", datosP[x]["id_usuario"]);
-            reset.setAttribute("class", "btnReseteo");
-            reset.innerHTML = "Resetear contraseña";
-            reset.onclick = confirmaReseteo(nombreCompleto, datosP[x]["id_usuario"]);
-            profesor.appendChild(reset);
+            console.log(respuesta.id_usuario)
+            console.log(datosP[x]["id_usuario"])
+            if (respuesta.id_usuario != datosP[x]["id_usuario"]) {
+                var reset = document.createElement("button");
+                reset.setAttribute("id", datosP[x]["id_usuario"]);
+                reset.setAttribute("class", "btnReseteo");
+                reset.innerHTML = "Resetear contraseña";
+                reset.onclick = confirmaReseteo(nombreCompleto, datosP[x]["id_usuario"]);
+                profesor.appendChild(reset);
+            }
+
 
 
             var datos = datosP[x]["empresas"];
@@ -254,7 +285,6 @@ function procesarDatos(respuesta) {
         var plantillaNav = traerPlantilla("plantillas/nav.html");
         copiaNav = plantillaNav.cloneNode(true);
         copiaNav.querySelector("#dropdownMenu").innerText = respuesta.user;
-        copiaNav.querySelector("#resetGordo").style.display = "none";
 
         //copiaNav.querySelector("#inicio").style.display = "none";
 
@@ -262,6 +292,9 @@ function procesarDatos(respuesta) {
 
         var btnCerrar = document.getElementById("cerrar");
         btnCerrar.onclick = cerrarSesion;
+
+        var btnCambioContraseña = document.getElementById("autoCambio");
+        btnCambioContraseña.onclick = cambiarContraseña;
 
         var datos = respuesta.Empresas;
 
@@ -479,26 +512,25 @@ function confirmaReseteo(nombre, id_usuario) {
 }
 
 function resetearContraseña(id_usuario) {
-    return function (ev) {
-        ev.preventDefault();
-        var usuario = "id_usuario=" + id_usuario;
 
-        var ajax = new XMLHttpRequest();
+    var usuario = "id_usuario=" + id_usuario;
 
-        ajax.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var respuesta = JSON.parse(this.responseText);
-                if (respuesta.sucess) {
-                    //comprobarLogueado();
-                    fila.parentElement.removeChild(fila);
-                } 
+    var ajax = new XMLHttpRequest();
+
+    ajax.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var respuesta = JSON.parse(this.responseText);
+            if (respuesta.sucess) {
+                //comprobarLogueado();
+                alert("reset" + id_usuario)
             }
         }
-
-        ajax.open("POST", "php/API/AjaxReset.php");
-        ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        ajax.send(usuario);
     }
+
+    ajax.open("POST", "php/API/AjaxReset.php");
+    ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    ajax.send(usuario);
+
 
 }
 
@@ -516,5 +548,12 @@ function reseteoTotal() {
 
     var alerta = "contraseñas reseteadas";
     console.log(alerta)
+
+}
+
+function cambiarContraseña(ev) {
+    ev.preventDefault();
+
+    alert("cc")
 
 }

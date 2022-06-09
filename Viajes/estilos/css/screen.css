@@ -3,7 +3,7 @@ main {
 }
 
 nav {
-  width: 100%;
+  max-width: 100%;
   font-family: Arial, Helvetica, sans-serif;
   background-color: grey;
   display: -webkit-box;
@@ -11,22 +11,23 @@ nav {
   display: flex;
 }
 
+.dropdown {
+  -ms-flex-item-align: baseline;
+      align-self: baseline;
+  margin-right: 7%;
+}
+
 .dropdown-menu {
   --bs-dropdown-min-width: none;
   --bs-dropdown-padding-x: none;
+  min-width: -webkit-max-content;
+  min-width: -moz-max-content;
+  min-width: max-content;
 }
 
 .dropdown-menu.show {
   background: grey;
   border: 0;
-}
-
-div .login {
-  background-color: grey;
-  -webkit-transition: height 0.5s ease-out;
-  transition: height 0.5s ease-out;
-  -webkit-transition: width 0.5s ease-out;
-  transition: width 0.5s ease-out;
 }
 
 .btn-login {
@@ -38,9 +39,14 @@ div .login {
   max-width: 50%;
 }
 
-button#tutoriales:hover {
+button.tuto:hover {
+  background-color: grey;
+  -webkit-transition: height 0.5s ease-out;
+  transition: height 0.5s ease-out;
+  -webkit-transition: width 0.5s ease-out;
+  transition: width 0.5s ease-out;
   height: 35px;
-  width: 100px;
+  width: 150px;
   overflow: hidden;
   color: #fff;
   background-color: #3a3a3a;
