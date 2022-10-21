@@ -11,10 +11,32 @@ require_once $inicio . "include/BD/BDUsuario.php";
 
 Sesion::iniciar();
 
-$id_usuario = $_POST['id_usuario'];
 
-BDUsuario::reseteaContraseña($id_usuario);
+if(empty($_POST['id_usuario']))
+{
 
-$obj = new stdClass();
-$obj->sucess = true;
-echo json_encode($obj);
+    $usuarios = BDUsuario::leeProfesores();
+
+    for ($j = 0; $j < count($usuarios); $j++)
+    {
+        if($usuarios[$j]["id_usuario"]!=Sesion::leer("usuario")->getId_usuario())
+        {
+            BDUsuario::reseteaContraseña($usuarios[$j]["id_usuario"]);
+        }
+    }
+    $obj = new stdClass();
+    $obj->sucess = true;
+    echo json_encode($obj);
+
+
+}else{
+    $id_usuario = $_POST['id_usuario'];
+    BDUsuario::reseteaContraseña($id_usuario);
+
+    $obj = new stdClass();
+    $obj->sucess = true;
+    echo json_encode($obj);
+    
+}
+
+

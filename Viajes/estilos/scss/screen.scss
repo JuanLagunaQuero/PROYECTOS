@@ -1,7 +1,7 @@
 //VARIABLES
-$bg-color:grey;
-$txt-color-hover:#fff;
-$bg-color-hover:rgb(58, 58, 58);
+$bg-color: grey;
+$txt-color-hover: #fff;
+$bg-color-hover: rgb(58, 58, 58);
 
 
 //MIXIN
@@ -22,14 +22,14 @@ $bg-color-hover:rgb(58, 58, 58);
 }
 
 
-@mixin transiciones($property, $duration, $timing:linear) {
+@mixin transiciones($property, $duration, $timing: linear) {
     -moz-transition: $property $duration $timing;
     -webkit-transition: $property $duration $timing;
     transition: $property $duration $timing;
 }
 
-main{
-    margin-left:25px;
+main {
+    margin-left: 25px;
 }
 
 

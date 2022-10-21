@@ -29,6 +29,7 @@ class BDVisita
 
         $resultado = BD::conecta()->query("SELECT max(`id_visita`) FROM `visita`");
         BD::conecta()->commit();
+        BD::conecta()->lastinsertid();
         $fila = $resultado->fetch();
         return $fila[0];
     }
@@ -86,5 +87,41 @@ class BDVisita
         $resultado = BD::conecta()->query($sql);
         $fila = $resultado->fetch();
         return ($fila [0] == 0);
+    }
+
+    public static function validaDieta($id_alumno_detalle_convenio)
+    {
+        $sql = "SELECT
+                COUNT(*)
+                FROM
+                    (
+                    SELECT
+                        visita.id_visita
+                    FROM
+                        `visita`
+                    JOIN alumno_detalle_convenio ON visita.id_alumno_detalle_convenio = alumno_detalle_convenio.id_alumno_detalle_convenio
+                    WHERE
+                        alumno_detalle_convenio.id_alumno_detalle_convenio = '$id_alumno_detalle_convenio' AND visita.dieta = 1
+                ) AS a";
+
+        $resultado = BD::conecta()->query($sql);            
+        $fila = $resultado->fetch();
+        return ($fila[0] < 3);
+    }
+
+    public static function añadeDieta($id_visita)
+    {
+        $sql = "UPDATE `visita` SET `dieta` = '1' WHERE `id_visita` = $id_visita";
+
+        BD::conecta()->exec($sql);
+
+    }
+
+    public static function quitaDieta($id_visita)
+    {
+        $sql = "UPDATE `visita` SET `dieta` = '0' WHERE `id_visita` = $id_visita";
+
+        BD::conecta()->exec($sql);
+
     }
 }

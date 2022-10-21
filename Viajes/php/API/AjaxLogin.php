@@ -28,16 +28,22 @@ if (empty($id_usuario) || empty($contrasena)) {
     // Si el usuario es identificado se crea la variable de sesion login
     if (Login::UsuarioEstaLogueado()) {
         Sesion::escribir('usuario', BDUsuario::leeUsuario($id_usuario, $contrasena));
-
-        
         if (Sesion::leer("usuario")->getContrasena()==Sesion::leer("usuario")->getId_usuario().Sesion::leer("usuario")->getId_usuario())
         {
-            
-        }
+            $obj = new stdClass();
+            $obj->sucess = true;
+            $obj->cambioContraseña = true;
+            echo json_encode($obj);
+
+        }else{
+
+
 
         if (Sesion::leer("usuario")->getRol() == "administrador") {
             $obj = new stdClass();
             $obj->sucess = true;
+            $obj->cambioContraseña = false;
+
             $obj->id_usuario = Sesion::leer("usuario")->getId_usuario();
             $obj->rol = Sesion::leer("usuario")->getRol();
             $obj->user = Sesion::leer("usuario")->getNombre() . " " . Sesion::leer("usuario")->getApellidos();
@@ -54,6 +60,7 @@ if (empty($id_usuario) || empty($contrasena)) {
             if (Sesion::leer("usuario")->getRol() == "profesor") {
                 $obj = new stdClass();
                 $obj->sucess = true;
+                $obj->cambioContraseña = false;
                 $obj->rol = Sesion::leer("usuario")->getRol();
                 $obj->user = Sesion::leer("usuario")->getNombre() . " " . Sesion::leer("usuario")->getApellidos();
                 $obj->Empresas = BDUsuario::leeAlumnosUsuario($id_usuario);
@@ -63,6 +70,8 @@ if (empty($id_usuario) || empty($contrasena)) {
                 echo json_encode($obj);
             }
         }
+    }
+
     } else {
         $obj = new stdClass();
         $obj->sucess = false;

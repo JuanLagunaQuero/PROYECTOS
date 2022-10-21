@@ -72,7 +72,8 @@ class BDUsuario
                     dc.fecha_inicio,
                     dc.fecha_fin,
                     adc.`id_alumno_detalle_convenio`,
-                    adc.nombre_alumno                  
+                    adc.nombre_alumno,
+                    adc.revisado                  
                    
                 FROM
                     alumno_detalle_convenio adc
@@ -101,6 +102,13 @@ class BDUsuario
 
         $sql = "UPDATE `usuario` SET `contrasena`= '$contrasena' WHERE `id_usuario` = '$id_usuario'";
         BD::conecta()->exec($sql);
+    }
+
+    public static function cambioContraseña($id_usuario, $contrasena, $contrasenaNueva)
+    {
+        $sql = "UPDATE `usuario` SET `contrasena`= '$contrasenaNueva' WHERE `id_usuario` = '$id_usuario' AND `contrasena` = '$contrasena'";
+        BD::conecta()->exec($sql);
+
     }
 
 }
